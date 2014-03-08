@@ -1,6 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GUI extends GameVisualiser {
 	private JTable xTable;
@@ -17,45 +19,75 @@ public class GUI extends GameVisualiser {
 			w.setLocationByPlatform(true);
 			GridBagLayout gridBagLayout = new GridBagLayout();
 			gridBagLayout.columnWidths = new int[]{124, 0, 0};
-			gridBagLayout.rowHeights = new int[]{24, 29, 0};
-			gridBagLayout.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-			gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+			gridBagLayout.rowHeights = new int[] {24, 30};
+			gridBagLayout.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+			gridBagLayout.rowWeights = new double[]{0.0, 1.0};
 			w.getContentPane().setLayout(gridBagLayout);
 			
 			JPanel mapPanel = new JPanel();
 			GridBagConstraints gbc_mapPanel = new GridBagConstraints();
 			gbc_mapPanel.anchor = GridBagConstraints.WEST;
-			gbc_mapPanel.insets = new Insets(0, 0, 5, 0);
+			gbc_mapPanel.insets = new Insets(0, 0, 5, 5);
 			gbc_mapPanel.gridx = 0;
 			gbc_mapPanel.gridy = 0;
 			w.getContentPane().add(mapPanel, gbc_mapPanel);
 			GridBagLayout gbl_mapPanel = new GridBagLayout();
-			gbl_mapPanel.columnWidths = new int[]{1018, 0};
-			gbl_mapPanel.rowHeights = new int[]{809, 0};
+			gbl_mapPanel.columnWidths = new int[] {1025, 0};
+			gbl_mapPanel.rowHeights = new int[] {810};
 			gbl_mapPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-			gbl_mapPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+			gbl_mapPanel.rowWeights = new double[]{0.0};
 			mapPanel.setLayout(gbl_mapPanel);
 			
 			JLabel mapLabel = new JLabel("");
+			mapLabel.setIcon(new ImageIcon(GUI.class.getResource("/Images/map.jpg")));
 			mapLabel.setVerticalAlignment(SwingConstants.TOP);
 			mapLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_mapLabel = new GridBagConstraints();
+			gbc_mapLabel.insets = new Insets(0, 0, 5, 0);
 			gbc_mapLabel.anchor = GridBagConstraints.NORTHWEST;
 			gbc_mapLabel.gridx = 0;
 			gbc_mapLabel.gridy = 0;
 			mapPanel.add(mapLabel, gbc_mapLabel);
 			
+			JLabel counterDetective1 = new JLabel("d1");
+			GridBagConstraints gbc_counterDetective1 = new GridBagConstraints();
+			gbc_counterDetective1.insets = new Insets(0, 0, 5, 0);
+			gbc_counterDetective1.gridx = 0;
+			gbc_counterDetective1.gridy = 0;
+			mapPanel.add(counterDetective1, gbc_counterDetective1);
+			
+			JLabel counterDetective2 = new JLabel("d2");
+			GridBagConstraints gbc_counterDetective2 = new GridBagConstraints();
+			gbc_counterDetective2.insets = new Insets(0, 0, 5, 0);
+			gbc_counterDetective2.gridx = 0;
+			gbc_counterDetective2.gridy = 0;
+			mapPanel.add(counterDetective2, gbc_counterDetective2);
+			
+			JLabel counterDetective3 = new JLabel("d3");
+			GridBagConstraints gbc_counterDetective3 = new GridBagConstraints();
+			gbc_counterDetective3.insets = new Insets(0, 0, 5, 0);
+			gbc_counterDetective3.gridx = 0;
+			gbc_counterDetective3.gridy = 0;
+			mapPanel.add(counterDetective3, gbc_counterDetective3);
+			
+			JLabel counterDetective4 = new JLabel("d4");
+			GridBagConstraints gbc_counterDetective4 = new GridBagConstraints();
+			gbc_counterDetective4.gridx = 0;
+			gbc_counterDetective4.gridy = 0;
+			mapPanel.add(counterDetective4, gbc_counterDetective4);
+			
 			JPanel playerPanel = new JPanel();
 			GridBagConstraints gbc_playerPanel = new GridBagConstraints();
+			gbc_playerPanel.insets = new Insets(0, 0, 5, 0);
 			gbc_playerPanel.anchor = GridBagConstraints.EAST;
 			gbc_playerPanel.gridx = 1;
 			gbc_playerPanel.gridy = 0;
 			w.getContentPane().add(playerPanel, gbc_playerPanel);
 			GridBagLayout gbl_playerPanel = new GridBagLayout();
 			gbl_playerPanel.columnWidths = new int[]{0, 0};
-			gbl_playerPanel.rowHeights = new int[]{0, 0, 0, 0};
+			gbl_playerPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 			gbl_playerPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-			gbl_playerPanel.rowWeights = new double[]{1.0, 1.0, 0.0, Double.MIN_VALUE};
+			gbl_playerPanel.rowWeights = new double[]{1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 			playerPanel.setLayout(gbl_playerPanel);
 			
 			JPanel mrXPanel = new JPanel();
@@ -69,12 +101,13 @@ public class GUI extends GameVisualiser {
 			playerPanel.add(mrXPanel, gbc_mrXPanel);
 			GridBagLayout gbl_mrXPanel = new GridBagLayout();
 			gbl_mrXPanel.columnWidths = new int[]{60, 60, 60};
-			gbl_mrXPanel.rowHeights = new int[]{20, 20, 20, 20, 20, 20, 0};
+			gbl_mrXPanel.rowHeights = new int[] {20, 20, 30, 30, 30};
 			gbl_mrXPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-			gbl_mrXPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+			gbl_mrXPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
 			mrXPanel.setLayout(gbl_mrXPanel);
 			
-			JLabel xPhoto = new JLabel("Photo Here");
+			JLabel xPhoto = new JLabel("");
+			xPhoto.setIcon(new ImageIcon(GUI.class.getResource("/Images/mrX.jpg")));
 			GridBagConstraints gbc_xPhoto = new GridBagConstraints();
 			gbc_xPhoto.gridheight = 2;
 			gbc_xPhoto.insets = new Insets(0, 0, 5, 5);
@@ -85,11 +118,26 @@ public class GUI extends GameVisualiser {
 			JLabel xName = new JLabel("Mr X");
 			GridBagConstraints gbc_xName = new GridBagConstraints();
 			gbc_xName.gridwidth = 2;
-			gbc_xName.gridheight = 2;
 			gbc_xName.insets = new Insets(0, 0, 5, 0);
 			gbc_xName.gridx = 1;
 			gbc_xName.gridy = 0;
 			mrXPanel.add(xName, gbc_xName);
+			
+			JLabel xHiddenMove = new JLabel("Hidden Move");
+			xHiddenMove.setBackground(Color.GRAY);
+			GridBagConstraints gbc_xHiddenMove = new GridBagConstraints();
+			gbc_xHiddenMove.insets = new Insets(0, 0, 5, 5);
+			gbc_xHiddenMove.gridx = 1;
+			gbc_xHiddenMove.gridy = 1;
+			mrXPanel.add(xHiddenMove, gbc_xHiddenMove);
+			
+			JLabel xDoubleMove = new JLabel("Double Move");
+			xDoubleMove.setBackground(new Color(70, 130, 180));
+			GridBagConstraints gbc_xDoubleMove = new GridBagConstraints();
+			gbc_xDoubleMove.insets = new Insets(0, 0, 5, 0);
+			gbc_xDoubleMove.gridx = 2;
+			gbc_xDoubleMove.gridy = 1;
+			mrXPanel.add(xDoubleMove, gbc_xDoubleMove);
 			
 			xTable = new JTable();
 			xTable.setBorder(new LineBorder(new Color(64, 64, 64)));
@@ -101,40 +149,6 @@ public class GUI extends GameVisualiser {
 			gbc_xTable.gridx = 0;
 			gbc_xTable.gridy = 2;
 			mrXPanel.add(xTable, gbc_xTable);
-			
-			JPanel xTickets = new JPanel();
-			GridBagConstraints gbc_xTickets = new GridBagConstraints();
-			gbc_xTickets.gridheight = 3;
-			gbc_xTickets.gridwidth = 3;
-			gbc_xTickets.anchor = GridBagConstraints.BASELINE;
-			gbc_xTickets.insets = new Insets(0, 0, 0, 5);
-			gbc_xTickets.fill = GridBagConstraints.HORIZONTAL;
-			gbc_xTickets.gridx = 0;
-			gbc_xTickets.gridy = 5;
-			mrXPanel.add(xTickets, gbc_xTickets);
-			GridBagLayout gbl_xTickets = new GridBagLayout();
-			gbl_xTickets.columnWidths = new int[]{60, 60, 60};
-			gbl_xTickets.rowHeights = new int[]{20, 0};
-			gbl_xTickets.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-			gbl_xTickets.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-			xTickets.setLayout(gbl_xTickets);
-			
-			JLabel hiddenTicket = new JLabel("Hidden Move");
-			hiddenTicket.setBackground(new Color(128, 128, 128));
-			GridBagConstraints gbc_hiddenTicket = new GridBagConstraints();
-			gbc_hiddenTicket.anchor = GridBagConstraints.NORTHWEST;
-			gbc_hiddenTicket.insets = new Insets(0, 0, 0, 5);
-			gbc_hiddenTicket.gridx = 0;
-			gbc_hiddenTicket.gridy = 0;
-			xTickets.add(hiddenTicket, gbc_hiddenTicket);
-			
-			JLabel doubleTicket = new JLabel("Double Move");
-			doubleTicket.setBackground(new Color(70, 130, 180));
-			GridBagConstraints gbc_doubleTicket = new GridBagConstraints();
-			gbc_doubleTicket.anchor = GridBagConstraints.NORTHWEST;
-			gbc_doubleTicket.gridx = 1;
-			gbc_doubleTicket.gridy = 0;
-			xTickets.add(doubleTicket, gbc_doubleTicket);
 			
 			JPanel detectivePanel = new JPanel();
 			GridBagConstraints gbc_detectivePanel = new GridBagConstraints();
@@ -155,7 +169,8 @@ public class GUI extends GameVisualiser {
 			gbl_detective1.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 			detective1.setLayout(gbl_detective1);
 			
-			JLabel detectivePhoto1 = new JLabel("New label");
+			JLabel detectivePhoto1 = new JLabel("");
+			detectivePhoto1.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveBlue.jpg")));
 			GridBagConstraints gbc_detectivePhoto1 = new GridBagConstraints();
 			gbc_detectivePhoto1.gridheight = 2;
 			gbc_detectivePhoto1.insets = new Insets(0, 0, 0, 5);
@@ -203,7 +218,8 @@ public class GUI extends GameVisualiser {
 			gbl_detective2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 			detective2.setLayout(gbl_detective2);
 			
-			JLabel detectivePhoto2 = new JLabel("New label");
+			JLabel detectivePhoto2 = new JLabel("");
+			detectivePhoto2.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveGreen.jpg")));
 			GridBagConstraints gbc_detectivePhoto2 = new GridBagConstraints();
 			gbc_detectivePhoto2.gridheight = 2;
 			gbc_detectivePhoto2.insets = new Insets(0, 0, 0, 5);
@@ -251,7 +267,8 @@ public class GUI extends GameVisualiser {
 			gbl_detective3.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 			detective3.setLayout(gbl_detective3);
 			
-			JLabel detectivePhoto3 = new JLabel("New label");
+			JLabel detectivePhoto3 = new JLabel("");
+			detectivePhoto3.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveYellow.jpg")));
 			GridBagConstraints gbc_detectivePhoto3 = new GridBagConstraints();
 			gbc_detectivePhoto3.gridheight = 2;
 			gbc_detectivePhoto3.insets = new Insets(0, 0, 0, 5);
@@ -299,7 +316,8 @@ public class GUI extends GameVisualiser {
 			gbl_detective4.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 			detective4.setLayout(gbl_detective4);
 			
-			JLabel detectivePhoto4 = new JLabel("New label");
+			JLabel detectivePhoto4 = new JLabel("");
+			detectivePhoto4.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveRed.jpg")));
 			GridBagConstraints gbc_detectivePhoto4 = new GridBagConstraints();
 			gbc_detectivePhoto4.gridheight = 2;
 			gbc_detectivePhoto4.insets = new Insets(0, 0, 0, 5);
@@ -337,6 +355,28 @@ public class GUI extends GameVisualiser {
 			gbc_train4.gridx = 3;
 			gbc_train4.gridy = 1;
 			detective4.add(train4, gbc_train4);
+			
+			JPanel panel = new JPanel();
+			GridBagConstraints gbc_panel = new GridBagConstraints();
+			gbc_panel.insets = new Insets(0, 0, 5, 5);
+			gbc_panel.fill = GridBagConstraints.BOTH;
+			gbc_panel.gridx = 0;
+			gbc_panel.gridy = 1;
+			w.getContentPane().add(panel, gbc_panel);
+			
+			JButton newGame = new JButton("New Game");
+			newGame.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+			});
+			panel.add(newGame);
+			
+			JButton saveGame = new JButton("Save Game");
+			panel.add(saveGame);
+			
+			JButton loadGame = new JButton("Load Game");
+			panel.add(loadGame);
 			w.setVisible(true);
 		}
 		// public abstract void run();

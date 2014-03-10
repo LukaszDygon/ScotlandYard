@@ -12,7 +12,7 @@ public class PlayerPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
-		button = new JButton("")
+		button = new JButton("");
 		
 	}
 	

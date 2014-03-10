@@ -14,5 +14,7 @@ public class Game {
 		gui.registerMapVisualisable(state);
 		
 		//initialise then start your GUI
+        gui.run();
+
 	}
 }

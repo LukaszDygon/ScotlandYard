@@ -13,8 +13,18 @@ public class Map {
 	private int mapW = 1018;
 	private int mapH = 809;
 	Image img = null;
-	try () {img = ImageIO.read(new File("map.jpg")}
-	catch{IOException e) {}
+
+    public Map()
+    {
+        try
+        {
+            img = ImageIO.read(new File("map.jpg"));
+        }
+        catch (java.io.IOException e)
+        {
+            img = null;
+        }
+    }
 	
 	public Dimension getSize()
 	{
@@ -22,8 +32,9 @@ public class Map {
 		
 	}
 	
-	public void paint(Graphics g) {
-	       g.drawImage(img, mapX, mapY, null);
-	     }
+	public void paint(Graphics g)
+    {
+	    g.drawImage(img, mapX, mapY, null);
+	}
 	
 }

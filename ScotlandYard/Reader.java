@@ -45,8 +45,8 @@ public class Reader
         // read the nodes
         for(int i = 0; i < numberOfNodes; i++)
         {
-        	String nodeName = in.nextLine();
-        	Node n = new Node(nodeName);
+        	String[] nodeName = in.nextLine().split(" ");
+        	Node n = new Node(Integer.parseInt(nodeName[0]));
         	graph.add(n);
         }
         
@@ -74,13 +74,23 @@ public class Reader
             }
             
             // create the edge
-            Edge edge = new Edge(id1, id2, weight, type);
+            Edge edge = new Edge(Integer.parseInt(id1), Integer.parseInt(id2), weight, type);
             graph.add(edge);
             
             
         }
         
         in.close();
+
+        Collections.sort(graph.nodes(),
+                new Comparator<Node>()
+                {
+                    public int compare(Node o1, Node o2)
+                    {
+                        return o1.name().compareTo(o2.name());
+                    }
+                }
+        );
     }
     
     /**

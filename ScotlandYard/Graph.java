@@ -1,5 +1,10 @@
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -8,7 +13,7 @@ import java.util.List;
  * classes that only contain the name of the node. The edges are 
  * more important as they define the structure of the graph. 
  */
-public class Graph
+public class Graph implements SerializableSY
 {
     private List<Node> nodes;
     private List<Edge> edges;
@@ -121,6 +126,87 @@ public class Graph
     	return output;
     }
 
+
+
+    public ByteArrayOutputStream save()
+    {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        ByteArrayOutputStream subBuffers[] = new ByteArrayOutputStream[nodes.size()+edges.size()];
+        for (int i=0; i<nodes.size(); i++)
+            subBuffers[i] = nodes.get(i).save();
+        for (int i=0; i<edges.size(); i++)
+            subBuffers[i+nodes.size()] = edges.get(i).save();
+
+
+        buffer.write(ByteBuffer.allocateDirect(4).putInt(nodes.size()).array(),0,4);
+        buffer.write(ByteBuffer.allocateDirect(4).putInt(edges.size()).array(),0,4);
+        if (nodes.size()>0)
+            buffer.write(ByteBuffer.allocateDirect(4).putInt(subBuffers[0].size()).array(),0,4);
+        if (edges.size()>0)
+            buffer.write(ByteBuffer.allocateDirect(4).putInt(subBuffers[nodes.size()].size()).array(),0,4);
+
+        for (ByteArrayOutputStream subBuffer : subBuffers)
+        {
+            Integer size = subBuffer.size();
+            buffer.write(subBuffer.toByteArray(),0,size);
+        }
+
+        return buffer;
+
+    }
+    // need to have some safeguards against IOExceptions when user feeds us bad files
+    public void load(ByteArrayInputStream buffer)
+    {
+        byte bytesInt[] = new byte[4];
+        byte bytesData[] = new byte[4096];
+
+
+        buffer.read(bytesInt,0,4);
+        Integer numNodes = ByteBuffer.wrap(bytesInt).getInt();
+        buffer.read(bytesInt,0,4);
+        Integer numEdges = ByteBuffer.wrap(bytesInt).getInt();
+        Integer nodeStride = 0;
+        Integer edgeStride = 0;
+        if (numNodes>0)
+        {
+            buffer.read(bytesInt,0,4);
+            nodeStride = ByteBuffer.wrap(bytesInt).getInt();
+        }
+        if (edgeStride>0)
+        {
+            buffer.read(bytesInt,0,4);
+            edgeStride = ByteBuffer.wrap(bytesInt).getInt();
+        }
+
+        nodes.clear();
+        edges.clear();
+
+        for (int i=0; i<numNodes; i++)
+        {
+            buffer.read(bytesData,0,nodeStride);
+            Node node = new Node(-1);
+            node.load(new ByteArrayInputStream(bytesData,0,nodeStride));
+            nodes.add(node);
+        }
+        Collections.sort(nodes,
+                new Comparator<Node>()
+                {
+                    public int compare(Node o1, Node o2)
+                    {
+                        return o1.name().compareTo(o2.name());
+                    }
+                }
+        );
+
+        for (int i=0; i<numEdges; i++)
+        {
+            buffer.read(bytesData,0,nodeStride);
+            Edge edge = new Edge(-1,-2, Double.MAX_VALUE, Edge.EdgeType.Underground);
+            edge.load(new ByteArrayInputStream(bytesData,0,edgeStride));
+            edges.add(edge);
+        }
+    }
 
 
 

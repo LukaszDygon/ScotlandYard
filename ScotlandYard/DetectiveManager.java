@@ -1,0 +1,110 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Created by devsh on 10/03/14.
+ */
+public class DetectiveManager implements SerializableSY
+{
+    private ArrayList<Detective> detectives;
+
+    public DetectiveManager(int numDets)
+    {
+        detectives  = new ArrayList<Detective>();
+        for (int i=0; i<numDets; i++)
+            detectives.add(new Detective(i));
+    }
+
+    public void newGameInit()
+    {
+        for (Detective detective : detectives) detective.newGameInit();
+    }
+
+    /**
+     * Function to get the list of Mr X IDs. In this version of the game you will really only
+     * have one Mr X so this function will return a list with only one entry. However this
+     * may change down the line...
+     * @return The list of Mr X IDs
+     */
+    public List<Integer> getIdList()
+    {
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        for (Detective detective : detectives) ids.add(detective.getId());
+        return ids;
+    }
+
+    /**
+     * Function to retireve the current location of a player. The location is an id of a graph node
+     * @param playerId The id of the player
+     * @return The node id that the player is on
+     */
+    public Integer getNodeId(Integer playerId)
+    {
+        return detectives.get(playerId).getNodePosition();
+    }
+
+    public Integer getDetectiveCount()
+    {
+        return detectives.size();
+    }
+
+    public void setPlayerPosition(Integer playerId,Integer nodeId)
+    {
+        detectives.get(playerId).setNodePosition(nodeId);
+    }
+
+
+    public ByteArrayOutputStream save()
+    {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        ByteArrayOutputStream subBuffers[] = new ByteArrayOutputStream[detectives.size()];
+        for (int i=0; i<detectives.size(); i++)
+            subBuffers[i] = detectives.get(i).save();
+
+        buffer.write(ByteBuffer.allocateDirect(4).putInt(detectives.size()).array(),0,4);
+        if (detectives.size()>0)
+            buffer.write(ByteBuffer.allocateDirect(4).putInt(subBuffers[0].size()).array(),0,4);
+
+        for (ByteArrayOutputStream subBuffer : subBuffers)
+        {
+            Integer size = subBuffer.size();
+            buffer.write(subBuffer.toByteArray(),0,size);
+        }
+
+        return buffer;
+
+    }
+    // need to have some safeguards against IOExceptions when user feeds us bad files
+    public void load(ByteArrayInputStream buffer)
+    {
+        byte bytesInt[] = new byte[4];
+        byte bytesData[] = new byte[512];
+
+
+        buffer.read(bytesInt,0,4);
+        Integer numDetectives = ByteBuffer.wrap(bytesInt).getInt();
+
+        Integer stride = 0;
+        if (numDetectives>0)
+        {
+            buffer.read(bytesInt,0,4);
+            stride = ByteBuffer.wrap(bytesInt).getInt();
+        }
+
+        detectives.clear();
+
+        for (int i=0; i<numDetectives; i++)
+        {
+            buffer.read(bytesData,0,stride);
+            Detective detective = new Detective(-1);
+            detective.load(new ByteArrayInputStream(bytesData,0,stride));
+            detectives.add(detective);
+        }
+    }
+}

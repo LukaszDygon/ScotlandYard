@@ -13,6 +13,7 @@ public class GUI extends GameVisualiser {
 		{
 			JFrame w = new JFrame();
 			w.setDefaultCloseOperation(w.EXIT_ON_CLOSE);
+            //w.setDefaultLookAndFeelDecorated(true);
 			//all the components
 			
 			w.pack();
@@ -39,7 +40,7 @@ public class GUI extends GameVisualiser {
 			mapPanel.setLayout(gbl_mapPanel);
 			
 			JLabel mapLabel = new JLabel("");
-			mapLabel.setIcon(new ImageIcon(GUI.class.getResource("/Images/map.jpg")));
+			mapLabel.setIcon(new ImageIcon(GUI.class.getResource(mapVisualisable.getMapFilename())));
 			mapLabel.setVerticalAlignment(SwingConstants.TOP);
 			mapLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_mapLabel = new GridBagConstraints();
@@ -107,7 +108,7 @@ public class GUI extends GameVisualiser {
 			mrXPanel.setLayout(gbl_mrXPanel);
 			
 			JLabel xPhoto = new JLabel("");
-			xPhoto.setIcon(new ImageIcon(GUI.class.getResource("/Images/mrX.jpg")));
+			xPhoto.setIcon(new ImageIcon(GUI.class.getResource("./Images/mrX.jpg")));
 			GridBagConstraints gbc_xPhoto = new GridBagConstraints();
 			gbc_xPhoto.gridheight = 2;
 			gbc_xPhoto.insets = new Insets(0, 0, 5, 5);
@@ -170,7 +171,7 @@ public class GUI extends GameVisualiser {
 			detective1.setLayout(gbl_detective1);
 			
 			JLabel detectivePhoto1 = new JLabel("");
-			detectivePhoto1.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveBlue.jpg")));
+			detectivePhoto1.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveBlue.jpg")));
 			GridBagConstraints gbc_detectivePhoto1 = new GridBagConstraints();
 			gbc_detectivePhoto1.gridheight = 2;
 			gbc_detectivePhoto1.insets = new Insets(0, 0, 0, 5);
@@ -219,7 +220,7 @@ public class GUI extends GameVisualiser {
 			detective2.setLayout(gbl_detective2);
 			
 			JLabel detectivePhoto2 = new JLabel("");
-			detectivePhoto2.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveGreen.jpg")));
+			detectivePhoto2.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveGreen.jpg")));
 			GridBagConstraints gbc_detectivePhoto2 = new GridBagConstraints();
 			gbc_detectivePhoto2.gridheight = 2;
 			gbc_detectivePhoto2.insets = new Insets(0, 0, 0, 5);
@@ -268,7 +269,7 @@ public class GUI extends GameVisualiser {
 			detective3.setLayout(gbl_detective3);
 			
 			JLabel detectivePhoto3 = new JLabel("");
-			detectivePhoto3.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveYellow.jpg")));
+			detectivePhoto3.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveYellow.jpg")));
 			GridBagConstraints gbc_detectivePhoto3 = new GridBagConstraints();
 			gbc_detectivePhoto3.gridheight = 2;
 			gbc_detectivePhoto3.insets = new Insets(0, 0, 0, 5);
@@ -317,7 +318,7 @@ public class GUI extends GameVisualiser {
 			detective4.setLayout(gbl_detective4);
 			
 			JLabel detectivePhoto4 = new JLabel("");
-			detectivePhoto4.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectiveRed.jpg")));
+			detectivePhoto4.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveRed.jpg")));
 			GridBagConstraints gbc_detectivePhoto4 = new GridBagConstraints();
 			gbc_detectivePhoto4.gridheight = 2;
 			gbc_detectivePhoto4.insets = new Insets(0, 0, 0, 5);
@@ -378,61 +379,12 @@ public class GUI extends GameVisualiser {
 			JButton loadGame = new JButton("Load Game");
 			panel.add(loadGame);
 			w.setVisible(true);
+
+            w.toFront();
+            w.setExtendedState(w.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		}
 		// public abstract void run();
-		
-		
-		/**
-		 * Function to register a class that implements MapVisualisable
-		 * @param a The object that implements MapVisualisable
-		 */
-		public void registerMapVisualisable(MapVisualisable a)
-		{
-			mapVisualisable = a;
-		}
-		
-		/**
-		 * Function to register an object that implements the PlayerVisualisable interface
-		 * @param a The PlayerVisualisable object
-		 */
-		public void registerPlayerVisualisable(PlayerVisualisable a)
-		{
-			playerVisualisable = a;
-		}
-		
-		/**
-		 * Function to register an object that implements the Visualisable interface. This function
-		 * will also set the PlayerVisualisable, MapVisualisable object  and the Intisable object
-		 * @param a The Visualisable object 
-		 */
-		public void registerVisualisable(Visualisable a)
-		{
-			visualisable = a;
-			registerPlayerVisualisable(a);
-			registerMapVisualisable(a);
-			registerInitialisable(a);
-		}
 
-		/**
-		 * Function to register an object that implements the Controllable interface. It also
-		 * set the Initialisable object
-		 * @param a The Controllable object
-		 */
-		public void registerControllable(Controllable a)
-		{
-			controllable = a;
-			registerInitialisable(a);
-		}
-		
-		/**
-		 * Function to register an object that implements the Initialisable interface
-		 * @param a The Initialisable object
-		 */
-		public void registerInitialisable(Initialisable a)
-		{
-			initialisable = a;
-		}
-		
 
 }
 

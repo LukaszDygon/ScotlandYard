@@ -51,7 +51,7 @@ public class Writer {
 		List<Node> nodes = graph.nodes();
 		for(Node n : nodes)
 		{
-			String line = n.name();
+			String line = Integer.toString(n.name());
 			printer.println(line);
 		}
 		

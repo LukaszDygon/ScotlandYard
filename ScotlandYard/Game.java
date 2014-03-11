@@ -12,6 +12,7 @@ public class Game {
 		GameState state = new GameState();
 		GUI gui = new GUI();
 		gui.registerMapVisualisable(state);
+		gui.run();
 		
 		//initialise then start your GUI
 	}

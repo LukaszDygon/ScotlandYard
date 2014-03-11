@@ -1,96 +1,110 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Class that will hold the state of the game. This is the class that will need
  * to implement the interfaces that we have provided you with
  */
-public class GameState implements MapVisualisable {
-	
-	/**
-	 * Vairable that will hold the filename for the map
-	 */
-	private String mapFilename;
-	public int taxiDetective1 = 0;
-	public int busDetective1 = 0;
-	public int trainDetective1 = 0;
-	public int taxiDetective2 = 0;
-	public int busDetective2 = 0;
-	public int trainDetective2 = 0;
-	public int taxiDetective3 = 0;
-	public int busDetective3 = 0;
-	public int trainDetective3 = 0;
-	public int taxiDetective4 = 0;
-	public int busDetective4 = 0;
-	public int trainDetective4 = 0;
-	public int xDoubleMove = 0;
-	public int xHiddenMove = 0;
-	public int turnNumber = 0;
-	public int posMrX;
-	public int posDetective1;
-	public int posDetective2;
-	public int posDetective3;
-	public int posDetective4;
-	
-	
+public class GameState implements SerializableSY
+{
+	private int turnsLeft = 0;
+	private Game game;
+    private PlayerManager playerManager;
+    private Map map;
+
+
+    public GameState(Game game_in)
+    {
+        game = game_in;
+        playerManager = game.getPlayerManager();
+        map = game.getMap();
+    }
+
 	public void newGameInitialise(int players)
 	{
-		taxiDetective1 = 11;
-		busDetective1 = 8;
-		trainDetective1 = 4;
-		taxiDetective2 = 11;
-		busDetective2 = 8;
-		trainDetective2 = 4;
-		taxiDetective3 = 11;
-		busDetective3 = 8;
-		trainDetective3 = 4;
-		taxiDetective4 = 11;
-		busDetective4 = 8;
-		trainDetective4 = 4;
-		xDoubleMove = 2;
-		xHiddenMove = 4;
-		turnNumber = 24;
+        //reset player objects
+        playerManager.newGameInit();
+
+
+		turnsLeft = 24;
+
+
 		generateStartPosition();
 		
 	}
+
+    public int getNumberOfTurnsLeft() {return turnsLeft;}
 	
 	private void generateStartPosition()
 	{
-		int position = (int)Math.random() * 198 + 1;
-		posDetective1 = position;
-		while  (position == posDetective1 ||
-				position == posDetective2 ||
-				position == posDetective3 ||
-				position == posDetective4)
-		{
-			position = (int)Math.random() * 198 + 1;
-		}
-		posDetective2 = position;
-		while  (position == posDetective1)
-		{
-			position = (int)Math.random() * 198 + 1;
-		}
-		posDetective3 = position;
-		while  (position == posDetective1 ||
-				position == posDetective2)
-		{
-			position = (int)Math.random() * 198 + 1;
-		}
-		posDetective4 = position;
-		while  (position == posDetective1 ||
-				position == posDetective2 ||
-				position == posDetective3)
-		{
-			position = (int)Math.random() * 198 + 1;
-		}
-		posMrX = position;
-	}
-	
-	
-	/**
-	 * Concrete implementation of the MapVisualisable getMapFilename function
-	 * @return The map filename
-	 */
-	public String getMapFilename()
-	{
-		return mapFilename;
+        int nodesInGraph = map.getGraph().nodeNumber();
+        List<Integer> mrXs = playerManager.getMrXIdList();
+        List<Integer> detectives = playerManager.getDetectiveIdList();
+
+        ArrayList<Integer> taken =  new ArrayList<Integer>();
+
+        for (Integer mrXId : mrXs)
+        {
+            int position = (int)(Math.random() * (nodesInGraph-0.00001));
+            nodesInGraph--;
+            for (Integer j : taken)
+            {
+                if (j<=position)
+                    position++;
+            }
+            playerManager.setPlayerPosition(mrXId, position);
+            taken.add(position);
+            Collections.sort(taken);
+        }
+
+        for (Integer detectiveId : detectives)
+        {
+            int position = (int)(Math.random() * (nodesInGraph-0.00001));
+            nodesInGraph--;
+            for (Integer j : taken)
+            {
+                if (j<=position)
+                    position++;
+            }
+            playerManager.setPlayerPosition(detectiveId,position);
+            taken.add(position);
+            Collections.sort(taken);
+        }
 	}
 
+
+    public ByteArrayOutputStream save()
+    {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        ///ByteArrayOutputStream subBuffers[] = {playerManager.save()};
+
+        buffer.write(ByteBuffer.allocateDirect(4).putInt(turnsLeft).array(),0,4);
+/*
+        for (ByteArrayOutputStream subBuffer : subBuffers)
+        {
+            Integer size = subBuffer.size();
+            buffer.write(ByteBuffer.allocateDirect(4).putInt(size).array(),0,4);
+            buffer.write(subBuffer.toByteArray(),0,size);
+        }*/
+
+        return buffer;
+
+    }
+        // need to have some safeguards against IOExceptions when user feeds us bad files
+    public void load(ByteArrayInputStream buffer)
+    {
+        byte bytesInt[] = new byte[4];
+        buffer.read(bytesInt,0,4);
+        turnsLeft = ByteBuffer.wrap(bytesInt).getInt();/*
+
+        byte bytesData[] = new byte[512];
+        buffer.read(bytesInt,0,4);
+        Integer size = ByteBuffer.wrap(bytesInt).getInt();
+        buffer.read(bytesData,0,size);
+        playerManager.load(new ByteArrayInputStream(bytesData));*/
+    }
 }

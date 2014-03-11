@@ -1,3 +1,6 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 
 /**
  * Class that represents a graph edge. The edges 
@@ -7,7 +10,7 @@
  * In addition, they have both an edge type and an edge weight.
  * It is important that you understand this class.
  */
-public class Edge {
+public class Edge implements SerializableSY {
 
 	/**
 	 * Enum type which defines the different
@@ -19,8 +22,8 @@ public class Edge {
 	}
 	
 	
-	String id1;
-	String id2;
+	Integer id1;
+    Integer id2;
 	double weight;
 	EdgeType type;
 	
@@ -29,7 +32,7 @@ public class Edge {
 	 * Returns the id of the first node that this edge connects
 	 * @return The id of the first node
 	 */
-	public String id1()
+	public Integer id1()
 	{
 		return id1;
 	}
@@ -38,7 +41,7 @@ public class Edge {
 	 * Returns the id of the second node that this edge connects
 	 * @return The id of the second node
 	 */
-	public String id2()
+	public Integer id2()
 	{
 		return id2;
 	}
@@ -65,7 +68,7 @@ public class Edge {
 	 * @return The connecting node or null if n does is not connected by this 
 	 * edge
 	 */
-	public String connectedTo(String n)
+	public Integer connectedTo(String n)
 	{
 		if(connectsNode(n))
 		{
@@ -112,13 +115,72 @@ public class Edge {
 	 * @param weight The weight of the edge
 	 * @param type The type of the edge
 	 */
-	public Edge(String id1, String id2, double weight, EdgeType type)
+	public Edge(Integer id1, Integer id2, double weight, EdgeType type)
 	{
 		this.id1 = id1;
 		this.id2 = id2;
 		this.weight = weight;
 		this.type = type;
 	}
-	
-	
+
+
+    public ByteArrayOutputStream save()
+    {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        buffer.write(ByteBuffer.allocateDirect(4).putInt(id1).array(),0,4);
+        buffer.write(ByteBuffer.allocateDirect(4).putInt(id2).array(),0,4);
+        buffer.write(ByteBuffer.allocateDirect(8).putDouble(weight).array(),0,8);
+
+        Integer edgetypeint;
+        switch (type)
+        {
+            case Taxi:
+                edgetypeint = 0;
+                break;
+            case Bus:
+                edgetypeint = 1;
+                break;
+            case Underground:
+                edgetypeint = 2;
+                break;
+            default:
+                edgetypeint = -1;
+        }
+        buffer.write(ByteBuffer.allocateDirect(4).putInt(edgetypeint).array(),0,4);
+
+        return buffer;
+
+    }
+    // need to have some safeguards against IOExceptions when user feeds us bad files
+    public void load(ByteArrayInputStream buffer)
+    {
+        byte bytesInt[] = new byte[8];
+        buffer.read(bytesInt,0,4);
+        id1 = ByteBuffer.wrap(bytesInt).getInt();
+
+        buffer.read(bytesInt,0,4);
+        id2 = ByteBuffer.wrap(bytesInt).getInt();
+
+        buffer.read(bytesInt,0,8);
+        weight = ByteBuffer.wrap(bytesInt).getDouble();
+
+        buffer.read(bytesInt,0,4);
+        Integer edgetypeint = ByteBuffer.wrap(bytesInt).getInt();
+
+        switch (edgetypeint)
+        {
+            case 0:
+                type = EdgeType.Taxi;
+                break;
+            case 1:
+                type = EdgeType.Bus;
+                break;
+            case 2:
+                type = EdgeType.Underground;
+                break;
+            default:
+                type = EdgeType.Taxi;
+        }
+    }
 }

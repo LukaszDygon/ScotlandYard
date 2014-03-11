@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commands>
+	<addCategory
+		id="category_1394206188435"
+		name="Custom"
+		description="Container for custom components"
+		visible="true"
+		open="true"/>
+	<addComponent
+		id="custom_1394206188435"
+		name="Image"
+		description="Creates java.awt.Image component."
+		visible="true"
+		class="java.awt.Image"
+		category="category_1394206188435"/>
+</commands>

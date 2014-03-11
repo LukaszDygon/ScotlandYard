@@ -6,34 +6,31 @@ public class Game implements SerializableSY {
     private GameState gameState;
     private Map map;
     private PlayerManager playerManager;
+    
+    
 
 
-	public static void main(String[] args) {
-		Game game = new Game();
-		game.run();
-	}
-	
-	
-	public void run()
-	{
-<<<<<<< HEAD
-		GameState state = new GameState();
-		GUI gui = new GUI();
-		gui.registerMapVisualisable(state);
-		gui.run();
-=======
+public static void main(String[] args) {
+Game game = new Game();
+game.run();
+}
+
+
+public void run()
+{
         map = new Map("./graph.txt","./pos.txt","./Images/map.jpg");
-		gui = new GUI();
+        gui = new GUI();
         playerManager = new PlayerManager(this);
         GameState gameState = new GameState(this);
 
         playerManager.init(4); // 4 detectives
-		gui.registerMapVisualisable(map);
->>>>>>> 8737924271ba0d52556207003a4520040eeaeafc
-		
-		//initialise then start your GUI
+        gui.registerMapVisualisable(map);
+        
+        map.getNodePos(4);
+
+//initialise then start your GUI
         gui.run();
-	}
+}
 
     public PlayerManager getPlayerManager()
     {

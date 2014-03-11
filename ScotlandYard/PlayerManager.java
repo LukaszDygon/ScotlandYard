@@ -26,7 +26,7 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
         detectiveManager = new DetectiveManager(numberOfDetectives);
         mrXManager = new MrXManager(1,numberOfDetectives);
     }
-
+    
     public void newGameInit()
     {
         detectiveManager.newGameInit();

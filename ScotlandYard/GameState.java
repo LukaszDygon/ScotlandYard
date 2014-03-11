@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Class that will hold the state of the game. This is the class that will need
  * to implement the interfaces that we have provided you with
  */
-public class GameState implements SerializableSY
+public class GameState implements Initialisable, SerializableSY
 {
 	private int turnsLeft = 0;
 	private Game game;
@@ -22,6 +22,12 @@ public class GameState implements SerializableSY
         game = game_in;
         playerManager = game.getPlayerManager();
         map = game.getMap();
+    }
+    
+    public Boolean initialiseGame(Integer players)
+    {
+    	newGameInitialise(players);
+    	return true;
     }
 
 	public void newGameInitialise(int players)
@@ -75,6 +81,8 @@ public class GameState implements SerializableSY
             Collections.sort(taken);
         }
 	}
+	
+	
 
 
     public ByteArrayOutputStream save()

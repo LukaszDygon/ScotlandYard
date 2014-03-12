@@ -40,7 +40,12 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
      */
     public Integer getLocationX(Integer nodeId)
     {
-        return map.getNodePos(nodeId).data[0];
+        try {return map.getNodePos(nodeId).data[0];}
+        catch(NullPointerException e)
+        {
+        	return 0;
+        }
+        
     }
 
     /**
@@ -50,7 +55,11 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
      */
     public Integer getLocationY(Integer nodeId)
     {
-        return map.getNodePos(nodeId).data[1];
+    	try {return map.getNodePos(nodeId).data[1];}
+        catch(NullPointerException e)
+        {
+        	return 0;
+        }
     }
 
     /**

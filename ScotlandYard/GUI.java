@@ -307,7 +307,7 @@ public class GUI extends GameVisualiser {
 			gbc_detectivePhoto3.gridy = 0;
 			detective3.add(detectivePhoto3, gbc_detectivePhoto3);
 			
-			JLabel detectiveName3 = new JLabel("Wang");
+			JLabel detectiveName3 = new JLabel("Elise");
 			GridBagConstraints gbc_detectiveName3 = new GridBagConstraints();
 			gbc_detectiveName3.insets = new Insets(0, 0, 5, 0);
 			gbc_detectiveName3.gridwidth = 3;
@@ -356,7 +356,7 @@ public class GUI extends GameVisualiser {
 			gbc_detectivePhoto4.gridy = 0;
 			detective4.add(detectivePhoto4, gbc_detectivePhoto4);
 			
-			JLabel detectiveName4 = new JLabel("Weewee");
+			JLabel detectiveName4 = new JLabel("Troy");
 			GridBagConstraints gbc_detectiveName4 = new GridBagConstraints();
 			gbc_detectiveName4.insets = new Insets(0, 0, 5, 0);
 			gbc_detectiveName4.gridwidth = 3;
@@ -418,6 +418,7 @@ public class GUI extends GameVisualiser {
 					int returnVal = c.showOpenDialog(saveGame);
 					if (returnVal == JFileChooser.APPROVE_OPTION)
 					{
+						System.out.println("SAVE");
 						File filename = c.getSelectedFile();
 						System.out.println(""+filename.getName());
 						
@@ -446,6 +447,7 @@ public class GUI extends GameVisualiser {
 					int returnVal = c.showOpenDialog(loadGame);
 					if (returnVal == JFileChooser.APPROVE_OPTION)
 					{
+						System.out.println("LOAD");
 						File filename = c.getSelectedFile();
 						ByteArrayInputStream bytes = new ByteArrayInputStream(filename.getName().getBytes());
 						serializableSY.load(bytes);

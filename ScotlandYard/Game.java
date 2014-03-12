@@ -23,7 +23,7 @@ public class Game implements SerializableSY {
 
         playerManager.init(4); // 4 detectives
 		gui.registerMapVisualisable(map);
-		
+
 		//initialise then start your GUI
         gui.run();
 	}

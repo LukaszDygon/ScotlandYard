@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 public class Node implements SerializableSY
 {
     private Integer name;
-    Vector4D<Integer> pos;
+    Vector4Di pos;
 
     /**
      * Node constructor
@@ -28,11 +28,11 @@ public class Node implements SerializableSY
         return name;
     }
 
-    public void setPos(Vector4D<Integer> inPos)
+    public void setPos(Vector4Di inPos)
     {
         pos = inPos;
     }
-    public Vector4D<Integer> getPos()
+    public Vector4Di getPos()
     {
         return pos;
     }

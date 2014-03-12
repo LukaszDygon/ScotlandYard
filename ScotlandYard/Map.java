@@ -68,7 +68,7 @@ public class Map implements MapVisualisable, SerializableSY
             }
 
             if (to_set_pos_node!=null)
-                to_set_pos_node.setPos(new Vector4D<Integer>(Integer.parseInt(nameAndCoord[1]),Integer.parseInt(nameAndCoord[2]),0,0));
+                to_set_pos_node.setPos(new Vector4Di(Integer.parseInt(nameAndCoord[1]),Integer.parseInt(nameAndCoord[2]),0,0));
         }
 
         in.close();
@@ -77,7 +77,7 @@ public class Map implements MapVisualisable, SerializableSY
 
     public Graph getGraph() {return graph;}
 
-    public Vector4D<Integer> getNodePos(Integer nodeId)
+    public Vector4Di getNodePos(Integer nodeId)
     {
         Node node = binarySearchNode(graph.nodes(),new Node(nodeId));
         return node.getPos();

@@ -3,9 +3,26 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 public class GUI extends GameVisualiser {
 	private JTable xTable;
+	private Game game = new Game();
+	private Map map = game.getMap();
+	PlayerManager playerManager = game.getPlayerManager();
+		/**
+		 * @wbp.parser.entryPoint
+		 */
+		private int getPosX(int node)
+		{
+			return playerManager.getLocationX(node);
+		}
+		
+		private int getPosY(int node)
+		{
+			return playerManager.getLocationY(node);
+		}
+		
 		/**
 		 * @wbp.parser.entryPoint
 		 */
@@ -19,68 +36,80 @@ public class GUI extends GameVisualiser {
 			w.pack();
 			w.setLocationByPlatform(true);
 			GridBagLayout gridBagLayout = new GridBagLayout();
-			gridBagLayout.columnWidths = new int[]{124, 0, 0};
+			gridBagLayout.columnWidths = new int[] {1025, 200, 0};
 			gridBagLayout.rowHeights = new int[] {24, 30};
 			gridBagLayout.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 			gridBagLayout.rowWeights = new double[]{0.0, 1.0};
 			w.getContentPane().setLayout(gridBagLayout);
 			
-			JPanel mapPanel = new JPanel();
+			JLayeredPane mapPanel = new JLayeredPane();
 			GridBagConstraints gbc_mapPanel = new GridBagConstraints();
-			gbc_mapPanel.anchor = GridBagConstraints.WEST;
+			gbc_mapPanel.anchor = GridBagConstraints.FIRST_LINE_START;
 			gbc_mapPanel.insets = new Insets(0, 0, 5, 5);
 			gbc_mapPanel.gridx = 0;
 			gbc_mapPanel.gridy = 0;
 			w.getContentPane().add(mapPanel, gbc_mapPanel);
 			GridBagLayout gbl_mapPanel = new GridBagLayout();
 			gbl_mapPanel.columnWidths = new int[] {1025, 0};
-			gbl_mapPanel.rowHeights = new int[] {810};
-			gbl_mapPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-			gbl_mapPanel.rowWeights = new double[]{0.0};
+			gbl_mapPanel.rowHeights = new int[] {810, 0};
+			gbl_mapPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+			gbl_mapPanel.rowWeights = new double[]{0.0, 1.0};
 			mapPanel.setLayout(gbl_mapPanel);
 			
 			JLabel mapLabel = new JLabel("");
-			mapLabel.setIcon(new ImageIcon(GUI.class.getResource(mapVisualisable.getMapFilename())));
+			mapLabel.setIcon(new ImageIcon(GUI.class.getResource("/Images/map.jpg")));
 			mapLabel.setVerticalAlignment(SwingConstants.TOP);
 			mapLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_mapLabel = new GridBagConstraints();
+			gbc_mapLabel.fill = GridBagConstraints.BOTH;
 			gbc_mapLabel.insets = new Insets(0, 0, 5, 0);
-			gbc_mapLabel.anchor = GridBagConstraints.NORTHWEST;
 			gbc_mapLabel.gridx = 0;
 			gbc_mapLabel.gridy = 0;
 			mapPanel.add(mapLabel, gbc_mapLabel);
 			
+			JLayeredPane Counters = new JLayeredPane();
+			mapPanel.setLayer(Counters, 1);
+			GridBagConstraints gbc_Counters = new GridBagConstraints();
+			gbc_Counters.fill = GridBagConstraints.BOTH;
+			gbc_Counters.gridx = 0;
+			gbc_Counters.gridy = 0;
+			mapPanel.add(Counters, gbc_Counters);
+			
 			JLabel counterDetective1 = new JLabel("d1");
-			GridBagConstraints gbc_counterDetective1 = new GridBagConstraints();
-			gbc_counterDetective1.insets = new Insets(0, 0, 5, 0);
-			gbc_counterDetective1.gridx = 0;
-			gbc_counterDetective1.gridy = 0;
-			mapPanel.add(counterDetective1, gbc_counterDetective1);
+			counterDetective1.setBounds(0, 0, getPosX(12), getPosY(12));
+			Counters.add(counterDetective1);
+			mapPanel.setLayer(counterDetective1, 1);
+			counterDetective1.setIcon(new ImageIcon(GUI.class.getResource("/Images/d1.png")));
 			
 			JLabel counterDetective2 = new JLabel("d2");
-			GridBagConstraints gbc_counterDetective2 = new GridBagConstraints();
-			gbc_counterDetective2.insets = new Insets(0, 0, 5, 0);
-			gbc_counterDetective2.gridx = 0;
-			gbc_counterDetective2.gridy = 0;
-			mapPanel.add(counterDetective2, gbc_counterDetective2);
+			counterDetective2.setBounds(0, 0, getPosX(112), getPosY(112));
+			Counters.add(counterDetective2);
+			counterDetective2.setIcon(new ImageIcon(GUI.class.getResource("/Images/d2.png")));
+			mapPanel.setLayer(counterDetective2, 1);
 			
 			JLabel counterDetective3 = new JLabel("d3");
-			GridBagConstraints gbc_counterDetective3 = new GridBagConstraints();
-			gbc_counterDetective3.insets = new Insets(0, 0, 5, 0);
-			gbc_counterDetective3.gridx = 0;
-			gbc_counterDetective3.gridy = 0;
-			mapPanel.add(counterDetective3, gbc_counterDetective3);
+			counterDetective3.setBounds(0, 0, getPosX(5), getPosY(5));
+			Counters.add(counterDetective3);
+			counterDetective3.setIcon(new ImageIcon(GUI.class.getResource("/Images/d3.png")));
+			mapPanel.setLayer(counterDetective3, 1);
 			
 			JLabel counterDetective4 = new JLabel("d4");
-			GridBagConstraints gbc_counterDetective4 = new GridBagConstraints();
-			gbc_counterDetective4.gridx = 0;
-			gbc_counterDetective4.gridy = 0;
-			mapPanel.add(counterDetective4, gbc_counterDetective4);
+			counterDetective4.setBounds(0, 0, getPosX(56), getPosY(56));
+			Counters.add(counterDetective4);
+			counterDetective4.setIcon(new ImageIcon(GUI.class.getResource("/Images/d4.png")));
+			mapPanel.setLayer(counterDetective4, 1);
+			
+			JLabel counterX = new JLabel("mrX");
+			counterX.setBounds(0, 0, getPosX(67), getPosY(67));
+			Counters.add(counterX);
+			counterX.setIcon(new ImageIcon(GUI.class.getResource("/Images/mrX.png")));
+			mapPanel.setLayer(counterX, 1);
+			mapPanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{mapLabel, counterDetective1, counterDetective2, counterDetective3, counterDetective4, counterX}));
 			
 			JPanel playerPanel = new JPanel();
 			GridBagConstraints gbc_playerPanel = new GridBagConstraints();
 			gbc_playerPanel.insets = new Insets(0, 0, 5, 0);
-			gbc_playerPanel.anchor = GridBagConstraints.EAST;
+			gbc_playerPanel.anchor = GridBagConstraints.FIRST_LINE_START;
 			gbc_playerPanel.gridx = 1;
 			gbc_playerPanel.gridy = 0;
 			w.getContentPane().add(playerPanel, gbc_playerPanel);
@@ -93,7 +122,7 @@ public class GUI extends GameVisualiser {
 			
 			JPanel mrXPanel = new JPanel();
 			GridBagConstraints gbc_mrXPanel = new GridBagConstraints();
-			gbc_mrXPanel.anchor = GridBagConstraints.NORTH;
+			gbc_mrXPanel.anchor = GridBagConstraints.PAGE_START;
 			gbc_mrXPanel.insets = new Insets(0, 0, 5, 0);
 			gbc_mrXPanel.fill = GridBagConstraints.HORIZONTAL;
 			gbc_mrXPanel.gridx = 0;
@@ -154,7 +183,7 @@ public class GUI extends GameVisualiser {
 			JPanel detectivePanel = new JPanel();
 			GridBagConstraints gbc_detectivePanel = new GridBagConstraints();
 			gbc_detectivePanel.insets = new Insets(0, 0, 5, 0);
-			gbc_detectivePanel.anchor = GridBagConstraints.SOUTH;
+			gbc_detectivePanel.anchor = GridBagConstraints.PAGE_END;
 			gbc_detectivePanel.fill = GridBagConstraints.HORIZONTAL;
 			gbc_detectivePanel.gridx = 0;
 			gbc_detectivePanel.gridy = 1;
@@ -360,32 +389,42 @@ public class GUI extends GameVisualiser {
 			JPanel panel = new JPanel();
 			GridBagConstraints gbc_panel = new GridBagConstraints();
 			gbc_panel.insets = new Insets(0, 0, 5, 5);
-			gbc_panel.fill = GridBagConstraints.BOTH;
+			gbc_panel.fill = GridBagConstraints.HORIZONTAL;
 			gbc_panel.gridx = 0;
 			gbc_panel.gridy = 1;
 			w.getContentPane().add(panel, gbc_panel);
 			
 			JButton newGame = new JButton("New Game");
 			newGame.addMouseListener(new MouseAdapter() {
-				@Override
 				public void mouseClicked(MouseEvent e) {
+					playerManager.newGameInit();
 				}
 			});
 			panel.add(newGame);
 			
 			JButton saveGame = new JButton("Save Game");
+			saveGame.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+				}
+			});
 			panel.add(saveGame);
 			
 			JButton loadGame = new JButton("Load Game");
+			loadGame.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+				}
+			});
 			panel.add(loadGame);
+			
 			w.setVisible(true);
 
             w.toFront();
             w.setExtendedState(w.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		}
-		// public abstract void run();
-
-
+		
+		
 }
 
 

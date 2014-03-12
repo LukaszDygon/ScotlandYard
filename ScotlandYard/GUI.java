@@ -3,6 +3,12 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 public class GUI extends GameVisualiser {
@@ -24,7 +30,7 @@ public class GUI extends GameVisualiser {
 		public void run()
 		{
 			final JFrame w = new JFrame();
-			w.setDefaultCloseOperation(w.EXIT_ON_CLOSE);
+			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             //w.setDefaultLookAndFeelDecorated(true);
 			//all the components
 			
@@ -62,7 +68,7 @@ public class GUI extends GameVisualiser {
 			gbc_mapLabel.gridy = 0;
 			mapPanel.add(mapLabel, gbc_mapLabel);
 			
-			JLayeredPane counters = new JLayeredPane();
+			final JLayeredPane counters = new JLayeredPane();
 			mapPanel.setLayer(counters, 1);
 			GridBagConstraints gbc_counters = new GridBagConstraints();
 			gbc_counters.fill = GridBagConstraints.BOTH;
@@ -404,18 +410,52 @@ public class GUI extends GameVisualiser {
 			});
 			panel.add(newGame);
 			
-			JButton saveGame = new JButton("Save Game");
+			final JButton saveGame = new JButton("Save Game");
 			saveGame.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseClicked(MouseEvent arg0) {
+				public void mouseClicked(MouseEvent event) {
+					JFileChooser c = new JFileChooser("./SaveFiles");
+					int returnVal = c.showOpenDialog(saveGame);
+					if (returnVal == JFileChooser.APPROVE_OPTION)
+					{
+						File filename = c.getSelectedFile();
+						System.out.println(""+filename.getName());
+						
+						try {
+							FileOutputStream saveFile = new FileOutputStream (filename);
+						    ByteArrayOutputStream baos = serializableSY.save();
+						    
+						    baos.writeTo(saveFile);
+						    saveFile.close();
+						    
+						    
+						} catch(IOException ioe) {
+						    // Handle exception here
+						    ioe.printStackTrace();
+						}
+					}
 				}
 			});
 			panel.add(saveGame);
 			
-			JButton loadGame = new JButton("Load Game");
+			final JButton loadGame = new JButton("Load Game");
 			loadGame.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseClicked(MouseEvent arg0) {
+				public void mouseClicked(MouseEvent event) {
+					JFileChooser c = new JFileChooser("./SaveFiles");
+					int returnVal = c.showOpenDialog(loadGame);
+					if (returnVal == JFileChooser.APPROVE_OPTION)
+					{
+						File filename = c.getSelectedFile();
+						ByteArrayInputStream bytes = new ByteArrayInputStream(filename.getName().getBytes());
+						serializableSY.load(bytes);
+						
+						counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 20,20);
+						counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 20,20);
+						counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2)), (Integer)getPosY(playerVisualisable.getNodeId(2)), 20,20);
+						counterDetective4.setBounds((Integer)getPosX(playerVisualisable.getNodeId(3)), (Integer)getPosY(playerVisualisable.getNodeId(3)), 20,20);
+						counterX.setBounds((Integer)getPosX(playerVisualisable.getNodeId(4)), (Integer)getPosY(playerVisualisable.getNodeId(4)), 20,20);
+					}
 				}
 			});
 			panel.add(loadGame);

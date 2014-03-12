@@ -24,6 +24,7 @@ public class Game implements SerializableSY {
         gui.registerMapVisualisable(map);
         gui.registerPlayerVisualisable(playerManager);
         gui.registerInitialisable(gameState);
+        gui.registerSerialisableSY(this);
 
         //initialise then start your GUI
         gui.run();

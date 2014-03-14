@@ -4,10 +4,11 @@ import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
-
+import java.awt.event.InputEvent.*;
 
 public class GUI extends GameVisualiser {
 	private JTable xTable;
+	Point point = new Point(0, 0);
 	
 		private int getPosX(int node)
 		{
@@ -53,6 +54,15 @@ public class GUI extends GameVisualiser {
 			mapPanel.setLayout(gbl_mapPanel);
 			
 			JLabel mapLabel = new JLabel("");
+			mapLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int x = e.getX();
+					int y = e.getY();
+					point.setLocation(x, y);
+					System.out.println(point);
+				}
+			});
 			mapLabel.setIcon(new ImageIcon(GUI.class.getResource(getMap())));
 			mapLabel.setVerticalAlignment(SwingConstants.TOP);
 			mapLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -479,6 +489,8 @@ public class GUI extends GameVisualiser {
 		{
 			return mapVisualisable.getMapFilename();
 		}
+		
+		
 		
 		
 }

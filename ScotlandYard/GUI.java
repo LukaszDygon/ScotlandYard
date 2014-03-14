@@ -63,7 +63,7 @@ public class GUI extends GameVisualiser {
 			mapLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_mapLabel = new GridBagConstraints();
 			gbc_mapLabel.fill = GridBagConstraints.BOTH;
-			gbc_mapLabel.insets = new Insets(10, 10, 5, 5);
+			gbc_mapLabel.insets = new Insets(20, 20, 5, 5);
 			gbc_mapLabel.gridx = 0;
 			gbc_mapLabel.gridy = 0;
 			mapPanel.add(mapLabel, gbc_mapLabel);
@@ -77,25 +77,25 @@ public class GUI extends GameVisualiser {
 			mapPanel.add(counters, gbc_counters);
 
 			final JLabel counterDetective1 = new JLabel("d1");
-			counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 20,20);
+			counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 40,40);
 			counters.add(counterDetective1);
 			mapPanel.setLayer(counterDetective1, 1);
 			counterDetective1.setIcon(new ImageIcon(GUI.class.getResource("/Images/d1.png")));
 				
 			final JLabel counterDetective2 = new JLabel("d2");
-			counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 20,20);
+			counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 40,40);
 			counters.add(counterDetective2);
 			counterDetective2.setIcon(new ImageIcon(GUI.class.getResource("/Images/d2.png")));
 			mapPanel.setLayer(counterDetective2, 1);
 				
 			final JLabel counterDetective3 = new JLabel("d3");
-			counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2)), (Integer)getPosY(playerVisualisable.getNodeId(2)), 20,20);
+			counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2)), (Integer)getPosY(playerVisualisable.getNodeId(2)), 40,40);
 			counters.add(counterDetective3);
 			counterDetective3.setIcon(new ImageIcon(GUI.class.getResource("/Images/d3.png")));
 			mapPanel.setLayer(counterDetective3, 1);
 				
 			final JLabel counterDetective4 = new JLabel("d4");
-			counterDetective4.setBounds((Integer)getPosX(playerVisualisable.getNodeId(3)), (Integer)getPosY(playerVisualisable.getNodeId(3)), 20,20);
+			counterDetective4.setBounds((Integer)getPosX(playerVisualisable.getNodeId(3)), (Integer)getPosY(playerVisualisable.getNodeId(3)), 40,40);
 			counters.add(counterDetective4);
 			counterDetective4.setIcon(new ImageIcon(GUI.class.getResource("/Images/d4.png")));
 			mapPanel.setLayer(counterDetective4, 1);
@@ -146,7 +146,7 @@ public class GUI extends GameVisualiser {
 			gbc_xPhoto.gridy = 0;
 			mrXPanel.add(xPhoto, gbc_xPhoto);
 			
-			JLabel xName = new JLabel("Mr X");
+			JLabel xName = new JLabel("Mr Y");
 			GridBagConstraints gbc_xName = new GridBagConstraints();
 			gbc_xName.gridwidth = 2;
 			gbc_xName.insets = new Insets(0, 0, 5, 0);
@@ -209,7 +209,7 @@ public class GUI extends GameVisualiser {
 			gbc_detectivePhoto1.gridy = 0;
 			detective1.add(detectivePhoto1, gbc_detectivePhoto1);
 			
-			JLabel detectiveName1 = new JLabel("Annie");
+			JLabel detectiveName1 = new JLabel("Cheeky Viktor");
 			GridBagConstraints gbc_detectiveName1 = new GridBagConstraints();
 			gbc_detectiveName1.insets = new Insets(0, 0, 5, 0);
 			gbc_detectiveName1.gridwidth = 3;
@@ -258,7 +258,7 @@ public class GUI extends GameVisualiser {
 			gbc_detectivePhoto2.gridy = 0;
 			detective2.add(detectivePhoto2, gbc_detectivePhoto2);
 			
-			JLabel detectiveName2 = new JLabel("Frank");
+			JLabel detectiveName2 = new JLabel("Wrong Wladimir");
 			GridBagConstraints gbc_detectiveName2 = new GridBagConstraints();
 			gbc_detectiveName2.gridwidth = 3;
 			gbc_detectiveName2.insets = new Insets(0, 0, 5, 0);
@@ -307,7 +307,7 @@ public class GUI extends GameVisualiser {
 			gbc_detectivePhoto3.gridy = 0;
 			detective3.add(detectivePhoto3, gbc_detectivePhoto3);
 			
-			JLabel detectiveName3 = new JLabel("Elise");
+			JLabel detectiveName3 = new JLabel("Serious Yulia");
 			GridBagConstraints gbc_detectiveName3 = new GridBagConstraints();
 			gbc_detectiveName3.insets = new Insets(0, 0, 5, 0);
 			gbc_detectiveName3.gridwidth = 3;
@@ -356,7 +356,7 @@ public class GUI extends GameVisualiser {
 			gbc_detectivePhoto4.gridy = 0;
 			detective4.add(detectivePhoto4, gbc_detectivePhoto4);
 			
-			JLabel detectiveName4 = new JLabel("Troy");
+			JLabel detectiveName4 = new JLabel("Wise Mykola");
 			GridBagConstraints gbc_detectiveName4 = new GridBagConstraints();
 			gbc_detectiveName4.insets = new Insets(0, 0, 5, 0);
 			gbc_detectiveName4.gridwidth = 3;
@@ -401,11 +401,11 @@ public class GUI extends GameVisualiser {
 				public void mouseClicked(MouseEvent e) {
 					initialisable.initialiseGame(4);
 					//debugging
-					counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 20,20);
-					counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 20,20);
-					counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2)), (Integer)getPosY(playerVisualisable.getNodeId(2)), 20,20);
-					counterDetective4.setBounds((Integer)getPosX(playerVisualisable.getNodeId(3)), (Integer)getPosY(playerVisualisable.getNodeId(3)), 20,20);
-					counterX.setBounds((Integer)getPosX(playerVisualisable.getNodeId(4)), (Integer)getPosY(playerVisualisable.getNodeId(4)), 20,20);
+					counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 40,40);
+					counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 40,40);
+					counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2)), (Integer)getPosY(playerVisualisable.getNodeId(2)), 40,40);
+					counterDetective4.setBounds((Integer)getPosX(playerVisualisable.getNodeId(3)), (Integer)getPosY(playerVisualisable.getNodeId(3)), 40,40);
+					counterX.setBounds((Integer)getPosX(playerVisualisable.getNodeId(4)), (Integer)getPosY(playerVisualisable.getNodeId(4)), 40,40);
 				}
 			});
 			panel.add(newGame);

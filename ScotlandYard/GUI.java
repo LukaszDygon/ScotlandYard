@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 public class GUI extends GameVisualiser {
 	private JTable xTable;
@@ -415,7 +414,7 @@ public class GUI extends GameVisualiser {
 				@Override
 				public void mouseClicked(MouseEvent event) {
 					JFileChooser c = new JFileChooser("./SaveFiles");
-					int returnVal = c.showOpenDialog(saveGame);
+					int returnVal = c.showSaveDialog(saveGame);
 					if (returnVal == JFileChooser.APPROVE_OPTION)
 					{
 						System.out.println("SAVE");

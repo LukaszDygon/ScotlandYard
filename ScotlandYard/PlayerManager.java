@@ -118,7 +118,12 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
         for (ByteArrayOutputStream subBuffer : subBuffers)
         {
             Integer size = subBuffer.size();
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(size).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(size).array(),0,4);
+        }
+
+        for (ByteArrayOutputStream subBuffer : subBuffers)
+        {
+            Integer size = subBuffer.size();
             buffer.write(subBuffer.toByteArray(),0,size);
         }
 
@@ -129,18 +134,26 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<8)
+            return;
+
+        Integer []size = new Integer[2];
         byte bytesInt[] = new byte[4];
         buffer.read(bytesInt,0,4);
-        Integer size = ByteBuffer.wrap(bytesInt).getInt();
-
-        byte bytesData[] = new byte[8192];
-        buffer.read(bytesData,0,size);
-        mrXManager.load(new ByteArrayInputStream(bytesData));
-
-
+        size[0] = ByteBuffer.wrap(bytesInt).getInt();
         buffer.read(bytesInt,0,4);
-        size = ByteBuffer.wrap(bytesInt).getInt();
-        buffer.read(bytesData,0,size);
-        detectiveManager.load(new ByteArrayInputStream(bytesData));
+        size[1] = ByteBuffer.wrap(bytesInt).getInt();
+
+
+        if (buffer.available()<(size[0]+size[1]))
+            return;
+
+        byte bytesData[] = new byte[size[0]+size[1]];
+        buffer.read(bytesData,0,size[0]);
+        mrXManager.load(new ByteArrayInputStream(bytesData,0,size[0]));
+
+
+        buffer.read(bytesData,0,size[1]);
+        detectiveManager.load(new ByteArrayInputStream(bytesData,0,size[1]));
     }
 }

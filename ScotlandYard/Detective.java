@@ -49,12 +49,12 @@ public class Detective implements SerializableSY
     {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(id).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(id).array(),0,4);
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(nodePos).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(taxiTickets).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(busTickets).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(tubeTickets).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(nodePos).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(taxiTickets).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(busTickets).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(tubeTickets).array(),0,4);
 
         return buffer;
 
@@ -62,6 +62,10 @@ public class Detective implements SerializableSY
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<20)
+            return;
+
+
         byte bytesInt[] = new byte[8];
         buffer.read(bytesInt,0,4);
         id = ByteBuffer.wrap(bytesInt).getInt();

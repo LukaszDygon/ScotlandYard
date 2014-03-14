@@ -3,11 +3,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 
 public class GUI extends GameVisualiser {
@@ -448,14 +444,22 @@ public class GUI extends GameVisualiser {
 					{
 						System.out.println("LOAD");
 						File filename = c.getSelectedFile();
-						ByteArrayInputStream bytes = new ByteArrayInputStream(filename.getName().getBytes());
-						serializableSY.load(bytes);
+                        try
+                        {
+                            FileInputStream loadFile = new FileInputStream(filename);
+                            byte []buffer = new byte[loadFile.available()];
+                            loadFile.read(buffer,0,loadFile.available());
+						    serializableSY.load(new ByteArrayInputStream(buffer));
+                        } catch (IOException ioe)
+                        {
+                            System.out.print("LOAD FAIL");
+                        }
 						
-						counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 20,20);
-						counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 20,20);
-						counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2)), (Integer)getPosY(playerVisualisable.getNodeId(2)), 20,20);
-						counterDetective4.setBounds((Integer)getPosX(playerVisualisable.getNodeId(3)), (Integer)getPosY(playerVisualisable.getNodeId(3)), 20,20);
-						counterX.setBounds((Integer)getPosX(playerVisualisable.getNodeId(4)), (Integer)getPosY(playerVisualisable.getNodeId(4)), 20,20);
+						counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 40,40);
+						counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 40,40);
+						counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2)), (Integer)getPosY(playerVisualisable.getNodeId(2)), 40,40);
+						counterDetective4.setBounds((Integer)getPosX(playerVisualisable.getNodeId(3)), (Integer)getPosY(playerVisualisable.getNodeId(3)), 40,40);
+						counterX.setBounds((Integer)getPosX(playerVisualisable.getNodeId(4)), (Integer)getPosY(playerVisualisable.getNodeId(4)), 40,40);
 					}
 				}
 			});

@@ -62,7 +62,9 @@ public class GameState implements Initialisable, SerializableSY
                 if (j<=position)
                     position++;
             }
-            playerManager.setPlayerPosition(mrXId, position);
+
+            int nodeId = map.getGraph().nodes().get(position).name();
+            playerManager.setPlayerPosition(mrXId, nodeId);
             taken.add(position);
             Collections.sort(taken);
         }
@@ -76,7 +78,9 @@ public class GameState implements Initialisable, SerializableSY
                 if (j<=position)
                     position++;
             }
-            playerManager.setPlayerPosition(detectiveId,position);
+
+            int nodeId = map.getGraph().nodes().get(position).name();
+            playerManager.setPlayerPosition(detectiveId, nodeId);
             taken.add(position);
             Collections.sort(taken);
         }
@@ -88,16 +92,22 @@ public class GameState implements Initialisable, SerializableSY
     public ByteArrayOutputStream save()
     {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        ///ByteArrayOutputStream subBuffers[] = {playerManager.save()};
+        ByteArrayOutputStream subBuffers[] = {};
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(turnsLeft).array(),0,4);
-/*
+
+        buffer.write(ByteBuffer.allocate(4).putInt(turnsLeft).array(),0,4);
+
         for (ByteArrayOutputStream subBuffer : subBuffers)
         {
             Integer size = subBuffer.size();
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(size).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(size).array(),0,4);
+        }
+
+        for (ByteArrayOutputStream subBuffer : subBuffers)
+        {
+            Integer size = subBuffer.size();
             buffer.write(subBuffer.toByteArray(),0,size);
-        }*/
+        }
 
         return buffer;
 
@@ -105,14 +115,14 @@ public class GameState implements Initialisable, SerializableSY
         // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<4)
+            return;
+
         byte bytesInt[] = new byte[4];
         buffer.read(bytesInt,0,4);
-        turnsLeft = ByteBuffer.wrap(bytesInt).getInt();/*
+        int turnsLeftTmp = ByteBuffer.wrap(bytesInt).getInt();
 
-        byte bytesData[] = new byte[512];
-        buffer.read(bytesInt,0,4);
-        Integer size = ByteBuffer.wrap(bytesInt).getInt();
-        buffer.read(bytesData,0,size);
-        playerManager.load(new ByteArrayInputStream(bytesData));*/
+
+        turnsLeft = turnsLeftTmp;
     }
 }

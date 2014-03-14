@@ -45,6 +45,7 @@ public class MrX implements SerializableSY
         else
             return -1;
     }
+    public ArrayList<Integer> getNodePosLog() {return nodePosLog;}
 
 
     // no validation takes place in this class if tickets can be used or if node can be moved
@@ -57,15 +58,15 @@ public class MrX implements SerializableSY
     {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(id).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(xHiddenMove).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(xDoubleMove).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(id).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(xHiddenMove).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(xDoubleMove).array(),0,4);
 
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(nodePosLog.size()).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(nodePosLog.size()).array(),0,4);
 
         for (Integer pos : nodePosLog)
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(pos).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(pos).array(),0,4);
 
         return buffer;
 
@@ -73,20 +74,26 @@ public class MrX implements SerializableSY
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<16)
+            return;
+
         byte bytesInt[] = new byte[8];
         buffer.read(bytesInt,0,4);
-        id = ByteBuffer.wrap(bytesInt).getInt();
+        Integer idTmp = ByteBuffer.wrap(bytesInt).getInt();
 
         buffer.read(bytesInt,0,4);
-        xHiddenMove = ByteBuffer.wrap(bytesInt).getInt();
+        Integer xHiddenMoveTmp = ByteBuffer.wrap(bytesInt).getInt();
 
         buffer.read(bytesInt,0,4);
-        xDoubleMove = ByteBuffer.wrap(bytesInt).getInt();
+        Integer xDoubleMoveTmp = ByteBuffer.wrap(bytesInt).getInt();
 
 
 
         buffer.read(bytesInt,0,4);
         Integer pastMoves = ByteBuffer.wrap(bytesInt).getInt();
+
+        if (buffer.available()<pastMoves*4)
+            return;
 
         nodePosLog.clear();
 
@@ -96,5 +103,9 @@ public class MrX implements SerializableSY
             Integer tmpInt = ByteBuffer.wrap(bytesInt).getInt();
             nodePosLog.add(tmpInt);
         }
+
+        id = idTmp;
+        xDoubleMove = xDoubleMoveTmp;
+        xHiddenMove = xHiddenMoveTmp;
     }
 }

@@ -67,9 +67,9 @@ public class DetectiveManager implements SerializableSY
         for (int i=0; i<detectives.size(); i++)
             subBuffers[i] = detectives.get(i).save();
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(detectives.size()).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(detectives.size()).array(),0,4);
         if (detectives.size()>0)
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(subBuffers[0].size()).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(subBuffers[0].size()).array(),0,4);
 
         for (ByteArrayOutputStream subBuffer : subBuffers)
         {
@@ -78,17 +78,22 @@ public class DetectiveManager implements SerializableSY
         }
 
         return buffer;
-
     }
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<4)
+            return;
+
         byte bytesInt[] = new byte[4];
-        byte bytesData[] = new byte[512];
-
-
         buffer.read(bytesInt,0,4);
         Integer numDetectives = ByteBuffer.wrap(bytesInt).getInt();
+
+        if (numDetectives==0)
+            detectives.clear();
+
+        if (buffer.available()<4)
+            return;
 
         Integer stride = 0;
         if (numDetectives>0)
@@ -97,7 +102,12 @@ public class DetectiveManager implements SerializableSY
             stride = ByteBuffer.wrap(bytesInt).getInt();
         }
 
+        if (buffer.available()<stride*numDetectives)
+            return;
+
         detectives.clear();
+
+        byte bytesData[] = new byte[stride*numDetectives];
 
         for (int i=0; i<numDetectives; i++)
         {

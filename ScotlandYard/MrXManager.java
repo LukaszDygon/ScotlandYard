@@ -73,9 +73,9 @@ public class MrXManager implements SerializableSY
         for (int i=0; i<mrXs.size(); i++)
             subBuffers[i] = mrXs.get(i).save();
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(mrXs.size()).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(mrXs.size()).array(),0,4);
         if (mrXs.size()>0)
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(subBuffers[0].size()).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(subBuffers[0].size()).array(),0,4);
 
         for (ByteArrayOutputStream subBuffer : subBuffers)
         {
@@ -89,12 +89,18 @@ public class MrXManager implements SerializableSY
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<4)
+            return;
+
         byte bytesInt[] = new byte[4];
-        byte bytesData[] = new byte[512];
-
-
         buffer.read(bytesInt,0,4);
         Integer numX = ByteBuffer.wrap(bytesInt).getInt();
+
+        if (numX==0)
+            mrXs.clear();
+
+        if (buffer.available()<4)
+            return;
 
         Integer stride = 0;
         if (numX>0)
@@ -102,6 +108,11 @@ public class MrXManager implements SerializableSY
             buffer.read(bytesInt,0,4);
             stride = ByteBuffer.wrap(bytesInt).getInt();
         }
+
+        if (buffer.available()<stride*numX)
+            return;
+
+        byte bytesData[] = new byte[stride*numX];
 
         mrXs.clear();
 

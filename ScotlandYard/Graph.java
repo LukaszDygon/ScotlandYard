@@ -139,12 +139,12 @@ public class Graph implements SerializableSY
             subBuffers[i+nodes.size()] = edges.get(i).save();
 
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(nodes.size()).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(edges.size()).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(nodes.size()).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(edges.size()).array(),0,4);
         if (nodes.size()>0)
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(subBuffers[0].size()).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(subBuffers[0].size()).array(),0,4);
         if (edges.size()>0)
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(subBuffers[nodes.size()].size()).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(subBuffers[nodes.size()].size()).array(),0,4);
 
         for (ByteArrayOutputStream subBuffer : subBuffers)
         {
@@ -158,14 +158,19 @@ public class Graph implements SerializableSY
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<8)
+            return;
+
         byte bytesInt[] = new byte[4];
-        byte bytesData[] = new byte[4096];
-
-
         buffer.read(bytesInt,0,4);
         Integer numNodes = ByteBuffer.wrap(bytesInt).getInt();
         buffer.read(bytesInt,0,4);
         Integer numEdges = ByteBuffer.wrap(bytesInt).getInt();
+
+        if (buffer.available()<((numNodes>0 ? 4:0)+(numEdges>0 ? 4:0)))
+            return;
+
+
         Integer nodeStride = 0;
         Integer edgeStride = 0;
         if (numNodes>0)
@@ -178,6 +183,11 @@ public class Graph implements SerializableSY
             buffer.read(bytesInt,0,4);
             edgeStride = ByteBuffer.wrap(bytesInt).getInt();
         }
+
+        byte bytesData[] = new byte[nodeStride*numNodes+edgeStride*numEdges];
+
+        if (buffer.available()<(nodeStride*numNodes+edgeStride*numEdges))
+            return;
 
         nodes.clear();
         edges.clear();
@@ -201,7 +211,7 @@ public class Graph implements SerializableSY
 
         for (int i=0; i<numEdges; i++)
         {
-            buffer.read(bytesData,0,nodeStride);
+            buffer.read(bytesData,0,edgeStride);
             Edge edge = new Edge(-1,-2, Double.MAX_VALUE, Edge.EdgeType.Underground);
             edge.load(new ByteArrayInputStream(bytesData,0,edgeStride));
             edges.add(edge);

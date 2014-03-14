@@ -128,9 +128,9 @@ public class Edge implements SerializableSY {
     {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(id1).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(id2).array(),0,4);
-        buffer.write(ByteBuffer.allocateDirect(8).putDouble(weight).array(),0,8);
+        buffer.write(ByteBuffer.allocate(4).putInt(id1).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(id2).array(),0,4);
+        buffer.write(ByteBuffer.allocate(8).putDouble(weight).array(),0,8);
 
         Integer edgetypeint;
         switch (type)
@@ -147,7 +147,7 @@ public class Edge implements SerializableSY {
             default:
                 edgetypeint = -1;
         }
-        buffer.write(ByteBuffer.allocateDirect(4).putInt(edgetypeint).array(),0,4);
+        buffer.write(ByteBuffer.allocate(4).putInt(edgetypeint).array(),0,4);
 
         return buffer;
 
@@ -155,6 +155,9 @@ public class Edge implements SerializableSY {
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<20)
+            return;
+
         byte bytesInt[] = new byte[8];
         buffer.read(bytesInt,0,4);
         id1 = ByteBuffer.wrap(bytesInt).getInt();

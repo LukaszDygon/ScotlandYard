@@ -153,7 +153,12 @@ public class Map implements MapVisualisable, SerializableSY
         for (ByteArrayOutputStream subBuffer : subBuffers)
         {
             Integer size = subBuffer.size();
-            buffer.write(ByteBuffer.allocateDirect(4).putInt(size).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(size).array(),0,4);
+        }
+
+        for (ByteArrayOutputStream subBuffer : subBuffers)
+        {
+            Integer size = subBuffer.size();
             buffer.write(subBuffer.toByteArray(),0,size);
         }
 
@@ -163,12 +168,19 @@ public class Map implements MapVisualisable, SerializableSY
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        if (buffer.available()<4)
+            return;
+
         byte bytesInt[] = new byte[4];
         buffer.read(bytesInt,0,4);
-        Integer size = ByteBuffer.wrap(bytesInt).getInt();
+        Integer []size = new Integer[1];
+        size[0] = ByteBuffer.wrap(bytesInt).getInt();
 
-        byte bytesData[] = new byte[4096];
-        buffer.read(bytesData,0,size);
-        graph.load(new ByteArrayInputStream(bytesData,0,size));
+        if (buffer.available()<size[0])
+            return;
+
+        byte bytesData[] = new byte[size[0]];
+        buffer.read(bytesData,0,size[0]);
+        graph.load(new ByteArrayInputStream(bytesData,0,size[0]));
     }
 }

@@ -111,7 +111,7 @@ public class GUI extends GameVisualiser {
 			gbc_winScreen.gridy = 0;
 			mapPanel.add(winScreen, gbc_winScreen);
 
-			setMap(mapPanel, winScreen, counters, getTransportType);
+
 			
 			//////////PLAYERS/////////////
 			
@@ -162,7 +162,7 @@ public class GUI extends GameVisualiser {
 			detectivePanel_1.setLayout(new GridLayout(0, 1, 0, 0));
 			
 			setDetectives(detectivePanel_1);
-			
+			setMap(mapPanel, winScreen, counters, detectivePanel_1, mrXPanel, getTransportType);
 			/////////// BUTTONS /////////////
 			
 			JPanel panel = new JPanel();
@@ -315,7 +315,8 @@ public class GUI extends GameVisualiser {
 			counters.repaint();
 		}
 		
-		private void setMap(final JLayeredPane mapPanel, final JPanel winScreen,  final JLayeredPane counters, final JPanel getTransportType)
+		private void setMap(final JLayeredPane mapPanel, final JPanel winScreen,  final JLayeredPane counters,
+				final JPanel detectivePanel, final JPanel mrXPanel, final JPanel getTransportType)
 		{
 			JLabel mapLabel = new JLabel("");
 			if (! getTransportType.isVisible()){
@@ -327,7 +328,7 @@ public class GUI extends GameVisualiser {
 						int y = e.getY();
 						point.setLocation(x, y);
 						getTransportType.removeAll();
-						showTransport(getTransportType, winScreen, mapPanel, counters, true, x, y);
+						showTransport(getTransportType, winScreen, mapPanel,  counters, detectivePanel, mrXPanel, true, x, y);
 					}
 				}
 			});
@@ -622,7 +623,9 @@ public class GUI extends GameVisualiser {
 			detective.add(train, gbc_train);
 		}
 		
-		private void showTransport(final JPanel getTransportType, final JPanel winScreen, final JLayeredPane mapPanel, final JLayeredPane counters, Boolean visible, int x, int y)
+		private void showTransport(final JPanel getTransportType, final JPanel winScreen,
+				final JLayeredPane mapPanel, final JLayeredPane counters,
+				final JPanel detectivePanel, final JPanel mrXPanel, final Boolean visible, int x, int y)
 		{
 			final int node = controllable.getNodeIdFromLocation(x, y);
 			getTransportType.setVisible(visible);
@@ -641,7 +644,9 @@ public class GUI extends GameVisualiser {
 					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Taxi);
 					getTransportType.setVisible(false);
 					if (possible){
-					setCounters(mapPanel, counters);
+						setCounters(mapPanel, counters);
+						setDetectives(detectivePanel);
+						setMrX(mrXPanel);
 					}
 					if (visualisable.isGameOver())
 					{
@@ -668,7 +673,9 @@ public class GUI extends GameVisualiser {
 					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Bus);
 					getTransportType.setVisible(false);
 					if (possible){
-					setCounters(mapPanel, counters);
+						setCounters(mapPanel, counters);
+						setDetectives(detectivePanel);
+						setMrX(mrXPanel);
 					}
 					if (visualisable.isGameOver())
 					{
@@ -695,7 +702,9 @@ public class GUI extends GameVisualiser {
 					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Underground);
 					getTransportType.setVisible(false);
 					if (possible){
-					setCounters(mapPanel, counters);
+						setCounters(mapPanel, counters);
+						setDetectives(detectivePanel);
+						setMrX(mrXPanel);
 					}
 					if (visualisable.isGameOver())
 					{
@@ -723,7 +732,9 @@ public class GUI extends GameVisualiser {
 						Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.SecretMove);
 						getTransportType.setVisible(false);
 						if (possible){
-						setCounters(mapPanel, counters);
+							setCounters(mapPanel, counters);
+							setDetectives(detectivePanel);
+							setMrX(mrXPanel);
 						}
 						if (visualisable.isGameOver())
 						{
@@ -748,7 +759,9 @@ public class GUI extends GameVisualiser {
 					public void mouseClicked(MouseEvent e) {
 						//ticketType = Initialisable.TicketType.DoubleMove;
 						Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.DoubleMove);
-						getTransportType.setVisible(false);
+							getTransportType.setVisible(false);
+							setDetectives(detectivePanel);
+							setMrX(mrXPanel);
 						if (possible){
 						
 						setCounters(mapPanel, counters);

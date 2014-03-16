@@ -98,14 +98,14 @@ public class GUI extends GameVisualiser {
 			final JPanel mrXPanel = new JPanel();
 			mrXPanel.setBackground(Color.DARK_GRAY);
 			GridBagConstraints gbc_mrXPanel = new GridBagConstraints();
+			gbc_mrXPanel.anchor = GridBagConstraints.LINE_START;
 			gbc_mrXPanel.insets = new Insets(5, 0, 0, 0);
-			gbc_mrXPanel.anchor = GridBagConstraints.PAGE_START;
 			gbc_mrXPanel.fill = GridBagConstraints.VERTICAL;
 			gbc_mrXPanel.gridx = 0;
 			gbc_mrXPanel.gridy = 0;
 			playerPanel.add(mrXPanel, gbc_mrXPanel);
 			GridBagLayout gbl_mrXPanel = new GridBagLayout();
-			gbl_mrXPanel.columnWidths = new int[] {40, 40, 40, 40};
+			gbl_mrXPanel.columnWidths = new int[] {40, 40, 40, 40, 0};
 			mrXPanel.setLayout(gbl_mrXPanel);
 			
 			setMrX(mrXPanel);
@@ -208,7 +208,7 @@ public class GUI extends GameVisualiser {
 			List<Initialisable.TicketType> moveList = visualisable.getMoveList(0);
 			for (int n = 0; n<24; n++)
 			{
-				JLabel move = new JLabel((n+1) + ": " /*+ moveList.get(n)*/);
+				JLabel move = new JLabel((n+1) + ": Train" /*+ moveList.get(n)*/);
 				GridBagConstraints gbc_move = new GridBagConstraints();
 				move.setForeground(Color.WHITE);
 				gbc_move.insets = new Insets(0, 0, 5, 5);
@@ -309,6 +309,7 @@ public class GUI extends GameVisualiser {
 			xHiddenMove.setOpaque(true);
 			xHiddenMove.setBackground(Color.GRAY);
 			GridBagConstraints gbc_xHiddenMove = new GridBagConstraints();
+			gbc_xHiddenMove.weightx = 1.0;
 			gbc_xHiddenMove.insets = new Insets(0, 0, 5, 0);
 			gbc_xHiddenMove.fill = GridBagConstraints.BOTH;
 			gbc_xHiddenMove.gridx = 2;
@@ -323,6 +324,7 @@ public class GUI extends GameVisualiser {
 			xDoubleMove.setToolTipText("");
 			xDoubleMove.setBackground(new Color(70, 130, 180));
 			GridBagConstraints gbc_xDoubleMove = new GridBagConstraints();
+			gbc_xDoubleMove.weightx = 1.0;
 			gbc_xDoubleMove.fill = GridBagConstraints.BOTH;
 			gbc_xDoubleMove.insets = new Insets(0, 0, 5, 0);
 			gbc_xDoubleMove.gridx = 3;
@@ -333,7 +335,7 @@ public class GUI extends GameVisualiser {
 			xMoves.setForeground(Color.WHITE);
 			xMoves.setBackground(Color.DARK_GRAY);
 			GridBagConstraints gbc_xMoves = new GridBagConstraints();
-			gbc_xMoves.gridwidth = 4;
+			gbc_xMoves.gridwidth = 5;
 			gbc_xMoves.gridheight = 6;
 			gbc_xMoves.insets = new Insets(0, 0, 0, 5);
 			gbc_xMoves.fill = GridBagConstraints.BOTH;
@@ -341,7 +343,7 @@ public class GUI extends GameVisualiser {
 			gbc_xMoves.gridy = 2;
 			mrXPanel.add(xMoves, gbc_xMoves);
 			GridBagLayout gbl_xMoves = new GridBagLayout();
-			gbl_xMoves.columnWidths = new int[] {30, 30, 30, 30, 0};
+			gbl_xMoves.columnWidths = new int[] {60, 60, 60, 60, 0};
 			gbl_xMoves.rowHeights = new int[] {15, 15, 15, 15, 15, 15, 0};
 			gbl_xMoves.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 			gbl_xMoves.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};

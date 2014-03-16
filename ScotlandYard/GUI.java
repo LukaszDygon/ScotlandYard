@@ -639,8 +639,8 @@ public class GUI extends GameVisualiser {
 				public void mouseClicked(MouseEvent e) {
 					//ticketType = Initialisable.TicketType.DoubleMove;
 					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Taxi);
-					if (possible){
 					getTransportType.setVisible(false);
+					if (possible){
 					setCounters(mapPanel, counters);
 					}
 					if (visualisable.isGameOver())
@@ -666,8 +666,8 @@ public class GUI extends GameVisualiser {
 				public void mouseClicked(MouseEvent e) {
 					//ticketType = Initialisable.TicketType.DoubleMove;
 					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Bus);
-					if (possible){
 					getTransportType.setVisible(false);
+					if (possible){
 					setCounters(mapPanel, counters);
 					}
 					if (visualisable.isGameOver())
@@ -693,8 +693,8 @@ public class GUI extends GameVisualiser {
 				public void mouseClicked(MouseEvent e) {
 					//ticketType = Initialisable.TicketType.DoubleMove;
 					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Underground);
-					if (possible){
 					getTransportType.setVisible(false);
+					if (possible){
 					setCounters(mapPanel, counters);
 					}
 					if (visualisable.isGameOver())
@@ -721,8 +721,8 @@ public class GUI extends GameVisualiser {
 					public void mouseClicked(MouseEvent e) {
 						//ticketType = Initialisable.TicketType.DoubleMove;
 						Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.SecretMove);
-						if (possible){
 						getTransportType.setVisible(false);
+						if (possible){
 						setCounters(mapPanel, counters);
 						}
 						if (visualisable.isGameOver())
@@ -748,8 +748,9 @@ public class GUI extends GameVisualiser {
 					public void mouseClicked(MouseEvent e) {
 						//ticketType = Initialisable.TicketType.DoubleMove;
 						Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.DoubleMove);
-						if (possible){
 						getTransportType.setVisible(false);
+						if (possible){
+						
 						setCounters(mapPanel, counters);
 						}
 						if (visualisable.isGameOver())

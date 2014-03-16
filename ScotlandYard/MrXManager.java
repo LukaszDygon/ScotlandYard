@@ -10,12 +10,15 @@ import java.util.List;
 public class MrXManager implements SerializableSY
 {
     private ArrayList<MrX> mrXs;
+    private GameState gameState;
 
-    public MrXManager(int numMrXs,int idOffset)
+    public MrXManager(int numMrXs,int idOffset, GameState gameState_in)
     {
         mrXs  = new ArrayList<MrX>();
         for (int i=0; i<numMrXs; i++)
             mrXs.add(new MrX(i+idOffset));
+
+        gameState = gameState_in;
     }
 
     public void newGameInit()
@@ -90,17 +93,15 @@ public class MrXManager implements SerializableSY
         {
             if (mrX.getId().equals(playerId))
             {
-                boolean show = false;
+                if (mrX.getId().equals(gameState.getNextPlayerToMove()))
+                    return true;
+
                 int []showTurns = {3,8,13,18};
                 for (int showTurn : showTurns)
                 {
                     if (mrX.getNodePosLog().size()==showTurn)
-                    {
-                        show = true;
-                        break;
-                    }
+                        return true;
                 }
-                return show;
             }
         }
 

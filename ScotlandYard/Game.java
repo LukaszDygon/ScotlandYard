@@ -2,8 +2,6 @@ import java.nio.*;
 import java.io.*;
 
 public class Game {
-    private GUI gui;
-    private GameState gameState;
     private Map map;
     private PlayerManager playerManager;
 
@@ -16,11 +14,11 @@ public class Game {
     public void run()
     {
         map = new Map("./graph.txt","./pos.txt","./Images/map.jpg");
-        gui = new GUI();
-        playerManager = new PlayerManager(this);
-        gameState = new GameState(this);
+        playerManager = new PlayerManager();
+        GameState gameState = new GameState(this);
+        playerManager.init(4,gameState); // 4 detectives
 
-        playerManager.init(4); // 4 detectives
+        GUI gui = new GUI();
         gui.registerVisualisable(gameState);
         gui.registerInitialisable(gameState);
         gui.registerMapVisualisable(map);

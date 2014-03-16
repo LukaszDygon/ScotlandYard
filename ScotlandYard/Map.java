@@ -93,6 +93,33 @@ public class Map implements MapVisualisable, SerializableSY
     }
 
 
+    /**
+     * Function that provides the Id of a node given a location. In this function you will need to
+     * find the node whose location is closest to the location provided
+     * @param xPosition The x position
+     * @param yPosition The y position
+     * @return The id of the node that is closest to the given position
+     */
+    public Integer getNodeIdFromLocation(Integer xPosition, Integer yPosition) //! I deeply and sincerely apologise for not using a QuadTree or any other tree to accelerate the search
+    {
+        Integer currentBestNode = -1;
+        float currentBestDistance = Float.MAX_VALUE;
+
+        for (Node node : graph.nodes())
+        {
+            float distance = node.getPos().sub(new Vector4Di(xPosition,yPosition,0,0)).lengthf();
+            if (distance<currentBestDistance)
+            {
+                currentBestNode = node.name();
+                currentBestDistance = distance;
+            }
+        }
+
+        return currentBestNode; // NOT DONE
+    }
+
+
+
     private static Node binarySearchNode(List<Node> nodes,Node node)
     {
         int start = 0;
@@ -155,12 +182,17 @@ public class Map implements MapVisualisable, SerializableSY
             Integer size = subBuffer.size();
             buffer.write(ByteBuffer.allocate(4).putInt(size).array(),0,4);
         }
+/*
+        Integer size = mapFilename.getBytes().length;
+        buffer.write(ByteBuffer.allocate(4).putInt(size).array(),0,4);
 
         for (ByteArrayOutputStream subBuffer : subBuffers)
         {
-            Integer size = subBuffer.size();
+            size = subBuffer.size();
             buffer.write(subBuffer.toByteArray(),0,size);
         }
+
+        buffer.write(mapFilename.getBytes(),0,size);*/
 
         return buffer;
 
@@ -168,21 +200,35 @@ public class Map implements MapVisualisable, SerializableSY
     // need to have some safeguards against IOExceptions when user feeds us bad files
     public void load(ByteArrayInputStream buffer)
     {
+        ///if (buffer.available()<8)
         if (buffer.available()<4)
             return;
 
         byte bytesInt[] = new byte[4];
         buffer.read(bytesInt,0,4);
-        Integer []size = new Integer[1];
+        Integer []size = new Integer[2];
         size[0] = ByteBuffer.wrap(bytesInt).getInt();
+        buffer.read(bytesInt,0,4);
+        size[1] = ByteBuffer.wrap(bytesInt).getInt();
 
         Game.fastprintln("Graph Buffer size: "+size[0]);
 
-        if (buffer.available()<size[0])
+        if (buffer.available()<size[0]+size[1])
             return;
 
-        byte bytesData[] = new byte[size[0]];
+        byte bytesData[] = new byte[size[0]+size[1]];
         buffer.read(bytesData,0,size[0]);
         graph.load(new ByteArrayInputStream(bytesData,0,size[0]));
+
+/*
+        buffer.read(bytesData,0,size[1]);
+        try
+        {
+            mapFilename = new String(bytesData, "UTF-8");;
+        }
+        catch (UnsupportedEncodingException uee)
+        {
+            mapFilename = "ERROR_LOADING_MAP_FILENAME.XCL";
+        }*/
     }
 }

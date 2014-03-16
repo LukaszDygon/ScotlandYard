@@ -11,6 +11,8 @@ import java.util.ArrayList;
 public class GameState implements Controllable,Visualisable
 {
 	private int turnsLeft = 0;
+    private int nextToMoveIndex = 0;
+    private int nextToMoveCount = 0;
 	private Game game;
     private PlayerManager playerManager;
     private Map map;
@@ -34,6 +36,8 @@ public class GameState implements Controllable,Visualisable
         //reset player objects
         playerManager.newGameInit();
 
+        nextToMoveIndex = 0;
+        nextToMoveCount = playerManager.getMrXIdList().size()+playerManager.getDetectiveIdList().size();
 
 		turnsLeft = 24;
 
@@ -100,16 +104,9 @@ public class GameState implements Controllable,Visualisable
         return false; // NOT DONE
     }
 
-    /**
-     * Function that provides the Id of a node given a location. In this function you will need to
-     * find the node whose location is closest to the location provided
-     * @param xPosition The x position
-     * @param yPosition The y position
-     * @return The id of the node that is closest to the given position
-     */
-    public Integer getNodeIdFromLocation(Integer xPosition, Integer yPosition)
+    public Integer getNodeIdFromLocation(Integer xPosition, Integer yPosition) //! I deeply and sincerely apologise for not using a QuadTree or any other tree to accelerate the search
     {
-        return 10; // NOT DONE
+        return map.getNodeIdFromLocation(xPosition,yPosition);
     }
 
 
@@ -127,6 +124,7 @@ public class GameState implements Controllable,Visualisable
 
 
             buffer.write(ByteBuffer.allocate(4).putInt(turnsLeft).array(),0,4);
+            buffer.write(ByteBuffer.allocate(4).putInt(nextToMoveIndex).array(),0,4);
 
             for (ByteArrayOutputStream subBuffer : subBuffers)
             {
@@ -167,32 +165,47 @@ public class GameState implements Controllable,Visualisable
             return false;
         }
 
-        ///if (buffer.length<12)
+        ///if (buffer.length<16)
             ///return false;
 
+        int counter = 0;
+
         byte bytesInt[] = new byte[4];
-        bytesInt[0] = buffer[0];
-        bytesInt[1] = buffer[1];
-        bytesInt[2] = buffer[2];
-        bytesInt[3] = buffer[3];
+        bytesInt[0] = buffer[counter];
+        bytesInt[1] = buffer[1+counter];
+        bytesInt[2] = buffer[2+counter];
+        bytesInt[3] = buffer[3+counter];
+        counter += 4;
         int turnsLeftTmp = ByteBuffer.wrap(bytesInt).getInt();
+        bytesInt[0] = buffer[counter];
+        bytesInt[1] = buffer[1+counter];
+        bytesInt[2] = buffer[2+counter];
+        bytesInt[3] = buffer[3+counter];
+        counter += 4;
+        int nextToMoveIndexTmp = ByteBuffer.wrap(bytesInt).getInt();
+
 
         Integer []size = new Integer[2];
-        bytesInt[0] = buffer[0+4];
-        bytesInt[1] = buffer[1+4];
-        bytesInt[2] = buffer[2+4];
-        bytesInt[3] = buffer[3+4];
+        bytesInt[0] = buffer[counter];
+        bytesInt[1] = buffer[1+counter];
+        bytesInt[2] = buffer[2+counter];
+        bytesInt[3] = buffer[3+counter];
+        counter += 4;
         size[0] = ByteBuffer.wrap(bytesInt).getInt();
-        bytesInt[0] = buffer[0+8];
-        bytesInt[1] = buffer[1+8];
-        bytesInt[2] = buffer[2+8];
-        bytesInt[3] = buffer[3+8];
+        bytesInt[0] = buffer[counter];
+        bytesInt[1] = buffer[1+counter];
+        bytesInt[2] = buffer[2+counter];
+        bytesInt[3] = buffer[3+counter];
+        counter += 4;
         size[1] = ByteBuffer.wrap(bytesInt).getInt();
 
-        map.load(new ByteArrayInputStream(buffer,12,size[0]));
-        playerManager.load(new ByteArrayInputStream(buffer,12+size[0],size[1]));
+        map.load(new ByteArrayInputStream(buffer,counter,size[0]));
+        playerManager.load(new ByteArrayInputStream(buffer,counter+size[0],size[1]));
+
+        nextToMoveCount = playerManager.getMrXIdList().size()+playerManager.getDetectiveIdList().size();
 
         turnsLeft = turnsLeftTmp;
+        nextToMoveIndex = nextToMoveIndexTmp;
 
         return true;
     }
@@ -267,7 +280,7 @@ public class GameState implements Controllable,Visualisable
      */
     public Integer getNextPlayerToMove()
     {
-        return 1; // NOT DONE
+        return nextToMoveIndex;
     }
 
     /**

@@ -9,19 +9,17 @@ import java.util.List;
 
 public class PlayerManager implements SerializableSY
 {
-    private Game game;
     private DetectiveManager detectiveManager;
     private MrXManager mrXManager;
 
-    public PlayerManager(Game game_in)
+    public PlayerManager()
     {
-        game = game_in;
     }
 
-    public void init(Integer numberOfDetectives)
+    public void init(Integer numberOfDetectives,GameState gameState)
     {
         detectiveManager = new DetectiveManager(numberOfDetectives);
-        mrXManager = new MrXManager(1,numberOfDetectives);
+        mrXManager = new MrXManager(1,numberOfDetectives,gameState);
     }
     
     public void newGameInit()

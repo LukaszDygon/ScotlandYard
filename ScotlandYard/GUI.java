@@ -82,8 +82,6 @@ public class GUI extends GameVisualiser {
 			getTransportType.setBackground(Color.LIGHT_GRAY);
 			mapPanel.setLayer(getTransportType, 2);
 			
-			setMap(mapPanel, getTransportType);
-			
 			JPanel winScreen = new JPanel();
 			winScreen.setVisible(false);
 			mapPanel.setLayer(winScreen, 3);
@@ -92,7 +90,8 @@ public class GUI extends GameVisualiser {
 			gbc_winScreen.gridx = 0;
 			gbc_winScreen.gridy = 0;
 			mapPanel.add(winScreen, gbc_winScreen);
-			
+
+			setMap(mapPanel, winScreen, counters, getTransportType);
 			
 			//////////PLAYERS/////////////
 			
@@ -229,7 +228,7 @@ public class GUI extends GameVisualiser {
 		private void setMoves(JPanel xMoves) {
 			xMoves.removeAll();
 			xMoves.validate();
-			List<Initialisable.TicketType> moveList = visualisable.getMoveList(0);
+			List<Initialisable.TicketType> moveList = visualisable.getMoveList(4);
 			for (int n = 0; n<moveList.size(); n++)
 			{
 				JLabel move = new JLabel((n+1) + ": " + (moveList.get(n)));
@@ -296,7 +295,7 @@ public class GUI extends GameVisualiser {
 			counters.repaint();
 		}
 		
-		private void setMap(final JLayeredPane mapPanel, final JPanel getTransportType)
+		private void setMap(final JLayeredPane mapPanel, final JPanel winScreen,  final JLayeredPane counters, final JPanel getTransportType)
 		{
 			JLabel mapLabel = new JLabel("");
 			if (! getTransportType.isVisible()){
@@ -308,7 +307,7 @@ public class GUI extends GameVisualiser {
 						int y = e.getY();
 						point.setLocation(x, y);
 						getTransportType.removeAll();
-						showTransport(getTransportType, true, x, y);
+						showTransport(getTransportType, winScreen, mapPanel, counters, true, x, y);
 					}
 				}
 			});
@@ -603,8 +602,9 @@ public class GUI extends GameVisualiser {
 			detective.add(train, gbc_train);
 		}
 		
-		private void showTransport(final JPanel getTransportType, Boolean visible, int x, int y)
+		private void showTransport(final JPanel getTransportType, final JPanel winScreen, final JLayeredPane mapPanel, final JLayeredPane counters, Boolean visible, int x, int y)
 		{
+			final int node = controllable.getNodeIdFromLocation(x, y);
 			getTransportType.setVisible(visible);
 			getTransportType.removeAll();
 
@@ -617,8 +617,25 @@ public class GUI extends GameVisualiser {
 			selectTaxi.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					//ticketType = Initialisable.TicketType.Taxi;
+					//ticketType = Initialisable.TicketType.DoubleMove;
+					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Taxi);
+					if (possible){
 					getTransportType.setVisible(false);
+					setCounters(mapPanel, counters);
+					}
+					if (visualisable.isGameOver())
+					{
+						winScreen.setVisible(true);
+						if(visualisable.getWinningPlayerId().equals(4))
+						{
+							endGame(winScreen, "X");
+						}
+						
+						else
+						{
+							endGame(winScreen, "D");
+						}
+					}
 				}
 			});
 			getTransportType.add(selectTaxi);
@@ -627,8 +644,25 @@ public class GUI extends GameVisualiser {
 			selectBus.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					//ticketType = Initialisable.TicketType.Bus;
+					//ticketType = Initialisable.TicketType.DoubleMove;
+					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Bus);
+					if (possible){
 					getTransportType.setVisible(false);
+					setCounters(mapPanel, counters);
+					}
+					if (visualisable.isGameOver())
+					{
+						winScreen.setVisible(true);
+						if(visualisable.getWinningPlayerId().equals(4))
+						{
+							endGame(winScreen, "X");
+						}
+						
+						else
+						{
+							endGame(winScreen, "D");
+						}
+					}
 				}
 			});
 			getTransportType.add(selectBus);
@@ -637,8 +671,25 @@ public class GUI extends GameVisualiser {
 			selectTrain.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					//ticketType = Initialisable.TicketType.Underground;
+					//ticketType = Initialisable.TicketType.DoubleMove;
+					Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.Underground);
+					if (possible){
 					getTransportType.setVisible(false);
+					setCounters(mapPanel, counters);
+					}
+					if (visualisable.isGameOver())
+					{
+						winScreen.setVisible(true);
+						if(visualisable.getWinningPlayerId().equals(4))
+						{
+							endGame(winScreen, "X");
+						}
+						
+						else
+						{
+							endGame(winScreen, "D");
+						}
+					}
 				}
 			});
 			getTransportType.add(selectTrain);
@@ -648,8 +699,25 @@ public class GUI extends GameVisualiser {
 				selectHidden.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						//ticketType = Initialisable.TicketType.SecretMove;
+						//ticketType = Initialisable.TicketType.DoubleMove;
+						Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.SecretMove);
+						if (possible){
 						getTransportType.setVisible(false);
+						setCounters(mapPanel, counters);
+						}
+						if (visualisable.isGameOver())
+						{
+							winScreen.setVisible(true);
+							if(visualisable.getWinningPlayerId().equals(4))
+							{
+								endGame(winScreen, "X");
+							}
+							
+							else
+							{
+								endGame(winScreen, "D");
+							}
+						}
 					}
 				});
 				getTransportType.add(selectHidden);
@@ -659,7 +727,24 @@ public class GUI extends GameVisualiser {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						//ticketType = Initialisable.TicketType.DoubleMove;
+						Boolean possible = controllable.movePlayer(visualisable.getNextPlayerToMove(), node, Initialisable.TicketType.DoubleMove);
+						if (possible){
 						getTransportType.setVisible(false);
+						setCounters(mapPanel, counters);
+						}
+						if (visualisable.isGameOver())
+						{
+							winScreen.setVisible(true);
+							if(visualisable.getWinningPlayerId().equals(4))
+							{
+								endGame(winScreen, "X");
+							}
+							
+							else
+							{
+								endGame(winScreen, "D");
+							}
+						}
 					}
 				});
 				getTransportType.add(selectDouble);
@@ -667,16 +752,18 @@ public class GUI extends GameVisualiser {
 			getTransportType.repaint();
 		}
 		
-		private void endGame(JPanel winScreen)
+		private void endGame(JPanel winScreen, String winner)
 		{
-			//conditions
-			JLabel xWinPicture = new JLabel("");
-			xWinPicture.setIcon(new ImageIcon(GUI.class.getResource("/Images/XWins.png")));
-			winScreen.add(xWinPicture);
-			
-			JLabel detectiveWinLabel = new JLabel("");
-			detectiveWinLabel.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectivesWin.png")));
-			winScreen.add(detectiveWinLabel);
+			if (winner.equals("X")) {
+				JLabel xWinPicture = new JLabel("");
+				xWinPicture.setIcon(new ImageIcon(GUI.class.getResource("/Images/XWins.png")));
+				winScreen.add(xWinPicture);
+			}
+			else {
+				JLabel detectiveWinLabel = new JLabel("");
+				detectiveWinLabel.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectivesWin.png")));
+				winScreen.add(detectiveWinLabel);
+			}
 		}
 }
 

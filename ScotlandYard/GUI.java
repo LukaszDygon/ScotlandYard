@@ -4,10 +4,10 @@ import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
-
+import java.awt.event.InputEvent.*;
 
 public class GUI extends GameVisualiser {
-	private JTable xTable;
+	Point point = new Point(0, 0);
 	
 		private int getPosX(int node)
 		{
@@ -53,6 +53,16 @@ public class GUI extends GameVisualiser {
 			mapPanel.setLayout(gbl_mapPanel);
 			
 			JLabel mapLabel = new JLabel("");
+			mapLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					
+					int x = e.getX();
+					int y = e.getY();
+					point.setLocation(x, y);
+					System.out.println(point);
+				}
+			});
 			mapLabel.setIcon(new ImageIcon(GUI.class.getResource(getMap())));
 			mapLabel.setVerticalAlignment(SwingConstants.TOP);
 			mapLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -126,15 +136,16 @@ public class GUI extends GameVisualiser {
 			
 			playerPanel.add(mrXPanel, gbc_mrXPanel);
 			GridBagLayout gbl_mrXPanel = new GridBagLayout();
-			gbl_mrXPanel.columnWidths = new int[]{60, 60, 60};
-			gbl_mrXPanel.rowHeights = new int[] {20, 20, 30, 30, 30};
-			gbl_mrXPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-			gbl_mrXPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+			gbl_mrXPanel.columnWidths = new int[] {60, 60, 60, 60};
+			gbl_mrXPanel.rowHeights = new int[] {15, 15, 15, 15, 15, 15, 0};
+			gbl_mrXPanel.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE, 0.0};
+			gbl_mrXPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
 			mrXPanel.setLayout(gbl_mrXPanel);
 			
 			JLabel xPhoto = new JLabel("");
 			xPhoto.setIcon(new ImageIcon(GUI.class.getResource("./Images/mrX.jpg")));
 			GridBagConstraints gbc_xPhoto = new GridBagConstraints();
+			gbc_xPhoto.gridwidth = 2;
 			gbc_xPhoto.gridheight = 2;
 			gbc_xPhoto.insets = new Insets(0, 0, 5, 5);
 			gbc_xPhoto.gridx = 0;
@@ -145,37 +156,49 @@ public class GUI extends GameVisualiser {
 			GridBagConstraints gbc_xName = new GridBagConstraints();
 			gbc_xName.gridwidth = 2;
 			gbc_xName.insets = new Insets(0, 0, 5, 0);
-			gbc_xName.gridx = 1;
+			gbc_xName.gridx = 2;
 			gbc_xName.gridy = 0;
 			mrXPanel.add(xName, gbc_xName);
 			
-			JLabel xHiddenMove = new JLabel("Hidden Move");
+			final JLabel xHiddenMove = new JLabel("Hidden");
+			xHiddenMove.setOpaque(true);
 			xHiddenMove.setBackground(Color.GRAY);
 			GridBagConstraints gbc_xHiddenMove = new GridBagConstraints();
+			gbc_xHiddenMove.fill = GridBagConstraints.BOTH;
 			gbc_xHiddenMove.insets = new Insets(0, 0, 5, 5);
-			gbc_xHiddenMove.gridx = 1;
+			gbc_xHiddenMove.gridx = 2;
 			gbc_xHiddenMove.gridy = 1;
 			mrXPanel.add(xHiddenMove, gbc_xHiddenMove);
 			
-			JLabel xDoubleMove = new JLabel("Double Move");
+			final JLabel xDoubleMove = new JLabel("Double");
+			xDoubleMove.setOpaque(true);
+			xDoubleMove.setToolTipText("");
 			xDoubleMove.setBackground(new Color(70, 130, 180));
 			GridBagConstraints gbc_xDoubleMove = new GridBagConstraints();
+			gbc_xDoubleMove.fill = GridBagConstraints.BOTH;
 			gbc_xDoubleMove.insets = new Insets(0, 0, 5, 0);
-			gbc_xDoubleMove.gridx = 2;
+			gbc_xDoubleMove.gridx = 3;
 			gbc_xDoubleMove.gridy = 1;
 			mrXPanel.add(xDoubleMove, gbc_xDoubleMove);
 			
-			xTable = new JTable();
-			xTable.setBorder(new LineBorder(new Color(64, 64, 64)));
-			GridBagConstraints gbc_xTable = new GridBagConstraints();
-			gbc_xTable.gridwidth = 3;
-			gbc_xTable.gridheight = 3;
-			gbc_xTable.insets = new Insets(0, 0, 5, 0);
-			gbc_xTable.fill = GridBagConstraints.BOTH;
-			gbc_xTable.gridx = 0;
-			gbc_xTable.gridy = 2;
-			mrXPanel.add(xTable, gbc_xTable);
+			final JPanel xMoves = new JPanel();
+			GridBagConstraints gbc_xMoves = new GridBagConstraints();
+			gbc_xMoves.gridwidth = 4;
+			gbc_xMoves.gridheight = 6;
+			gbc_xMoves.insets = new Insets(0, 0, 0, 5);
+			gbc_xMoves.fill = GridBagConstraints.BOTH;
+			gbc_xMoves.gridx = 0;
+			gbc_xMoves.gridy = 2;
+			mrXPanel.add(xMoves, gbc_xMoves);
+			GridBagLayout gbl_xMoves = new GridBagLayout();
+			gbl_xMoves.columnWidths = new int[] {30, 30, 30, 30, 0};
+			gbl_xMoves.rowHeights = new int[] {15, 15, 15, 15, 15, 15, 0};
+			gbl_xMoves.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+			gbl_xMoves.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+			xMoves.setLayout(gbl_xMoves);
 			
+			setMoves(xMoves);
+		
 			JPanel detectivePanel = new JPanel();
 			GridBagConstraints gbc_detectivePanel = new GridBagConstraints();
 			gbc_detectivePanel.insets = new Insets(0, 0, 5, 0);
@@ -213,24 +236,30 @@ public class GUI extends GameVisualiser {
 			detective1.add(detectiveName1, gbc_detectiveName1);
 			
 			JLabel taxi1 = new JLabel("Taxis");
+			taxi1.setOpaque(true);
 			taxi1.setBackground(new Color(255, 215, 0));
 			GridBagConstraints gbc_taxi1 = new GridBagConstraints();
+			gbc_taxi1.fill = GridBagConstraints.BOTH;
 			gbc_taxi1.insets = new Insets(0, 0, 0, 5);
 			gbc_taxi1.gridx = 1;
 			gbc_taxi1.gridy = 1;
 			detective1.add(taxi1, gbc_taxi1);
 			
 			JLabel bus1 = new JLabel("Buses");
+			bus1.setOpaque(true);
 			bus1.setBackground(new Color(34, 139, 34));
 			GridBagConstraints gbc_bus1 = new GridBagConstraints();
+			gbc_bus1.fill = GridBagConstraints.BOTH;
 			gbc_bus1.insets = new Insets(0, 0, 0, 5);
 			gbc_bus1.gridx = 2;
 			gbc_bus1.gridy = 1;
 			detective1.add(bus1, gbc_bus1);
 			
 			JLabel train1 = new JLabel("Trains");
+			train1.setOpaque(true);
 			train1.setBackground(new Color(255, 69, 0));
 			GridBagConstraints gbc_train1 = new GridBagConstraints();
+			gbc_train1.fill = GridBagConstraints.BOTH;
 			gbc_train1.gridx = 3;
 			gbc_train1.gridy = 1;
 			detective1.add(train1, gbc_train1);
@@ -262,24 +291,30 @@ public class GUI extends GameVisualiser {
 			detective2.add(detectiveName2, gbc_detectiveName2);
 			
 			JLabel taxi2 = new JLabel("Taxis");
+			taxi2.setOpaque(true);
 			taxi2.setBackground(new Color(255, 215, 0));
 			GridBagConstraints gbc_taxi2 = new GridBagConstraints();
+			gbc_taxi2.fill = GridBagConstraints.BOTH;
 			gbc_taxi2.insets = new Insets(0, 0, 0, 5);
 			gbc_taxi2.gridx = 1;
 			gbc_taxi2.gridy = 1;
 			detective2.add(taxi2, gbc_taxi2);
 			
 			JLabel bus2 = new JLabel("Buses");
+			bus2.setOpaque(true);
 			bus2.setBackground(new Color(34, 139, 34));
 			GridBagConstraints gbc_bus2 = new GridBagConstraints();
+			gbc_bus2.fill = GridBagConstraints.BOTH;
 			gbc_bus2.insets = new Insets(0, 0, 0, 5);
 			gbc_bus2.gridx = 2;
 			gbc_bus2.gridy = 1;
 			detective2.add(bus2, gbc_bus2);
 			
 			JLabel train2 = new JLabel("Trains");
+			train2.setOpaque(true);
 			train2.setBackground(new Color(255, 69, 0));
 			GridBagConstraints gbc_train2 = new GridBagConstraints();
+			gbc_train2.fill = GridBagConstraints.BOTH;
 			gbc_train2.gridx = 3;
 			gbc_train2.gridy = 1;
 			detective2.add(train2, gbc_train2);
@@ -311,24 +346,30 @@ public class GUI extends GameVisualiser {
 			detective3.add(detectiveName3, gbc_detectiveName3);
 			
 			JLabel taxi3 = new JLabel("Taxis");
+			taxi3.setOpaque(true);
 			taxi3.setBackground(new Color(255, 215, 0));
 			GridBagConstraints gbc_taxi3 = new GridBagConstraints();
+			gbc_taxi3.fill = GridBagConstraints.BOTH;
 			gbc_taxi3.insets = new Insets(0, 0, 0, 5);
 			gbc_taxi3.gridx = 1;
 			gbc_taxi3.gridy = 1;
 			detective3.add(taxi3, gbc_taxi3);
 			
 			JLabel bus3 = new JLabel("Buses");
+			bus3.setOpaque(true);
 			bus3.setBackground(new Color(34, 139, 34));
 			GridBagConstraints gbc_bus3 = new GridBagConstraints();
+			gbc_bus3.fill = GridBagConstraints.BOTH;
 			gbc_bus3.insets = new Insets(0, 0, 0, 5);
 			gbc_bus3.gridx = 2;
 			gbc_bus3.gridy = 1;
 			detective3.add(bus3, gbc_bus3);
 			
 			JLabel train3 = new JLabel("Trains");
+			train3.setOpaque(true);
 			train3.setBackground(new Color(255, 69, 0));
 			GridBagConstraints gbc_train3 = new GridBagConstraints();
+			gbc_train3.fill = GridBagConstraints.BOTH;
 			gbc_train3.gridx = 3;
 			gbc_train3.gridy = 1;
 			detective3.add(train3, gbc_train3);
@@ -360,24 +401,30 @@ public class GUI extends GameVisualiser {
 			detective4.add(detectiveName4, gbc_detectiveName4);
 			
 			JLabel taxi4 = new JLabel("Taxis");
+			taxi4.setOpaque(true);
 			taxi4.setBackground(new Color(255, 215, 0));
 			GridBagConstraints gbc_taxi4 = new GridBagConstraints();
+			gbc_taxi4.fill = GridBagConstraints.BOTH;
 			gbc_taxi4.insets = new Insets(0, 0, 0, 5);
 			gbc_taxi4.gridx = 1;
 			gbc_taxi4.gridy = 1;
 			detective4.add(taxi4, gbc_taxi4);
 			
 			JLabel bus4 = new JLabel("Buses");
+			bus4.setOpaque(true);
 			bus4.setBackground(new Color(34, 139, 34));
 			GridBagConstraints gbc_bus4 = new GridBagConstraints();
+			gbc_bus4.fill = GridBagConstraints.BOTH;
 			gbc_bus4.insets = new Insets(0, 0, 0, 5);
 			gbc_bus4.gridx = 2;
 			gbc_bus4.gridy = 1;
 			detective4.add(bus4, gbc_bus4);
 			
 			JLabel train4 = new JLabel("Trains");
+			train4.setOpaque(true);
 			train4.setBackground(new Color(255, 69, 0));
 			GridBagConstraints gbc_train4 = new GridBagConstraints();
+			gbc_train4.fill = GridBagConstraints.BOTH;
 			gbc_train4.gridx = 3;
 			gbc_train4.gridy = 1;
 			detective4.add(train4, gbc_train4);
@@ -449,7 +496,7 @@ public class GUI extends GameVisualiser {
 
             w.toFront();
             w.setExtendedState(w.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-            
+            setMoves(xMoves);
 		}
 		
 		/**
@@ -458,6 +505,20 @@ public class GUI extends GameVisualiser {
 		private String getMap() 
 		{
 			return mapVisualisable.getMapFilename();
+		}
+		// sets moves of Mr X table
+		private void setMoves(JPanel xMoves) {
+			xMoves.removeAll();
+			xMoves.validate();
+			for (int n = 0; n<24; n++)
+			{
+				JLabel move = new JLabel((n+1) + " + ticket");
+				GridBagConstraints gbc_move = new GridBagConstraints();
+				gbc_move.insets = new Insets(0, 0, 5, 5);
+				gbc_move.gridx = Math.round((n)/6);
+				gbc_move.gridy = n%6;
+				xMoves.add(move, gbc_move);
+			}
 		}
 		
 		

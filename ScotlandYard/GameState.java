@@ -109,7 +109,7 @@ public class GameState implements Controllable,Visualisable
      */
     public Integer getNodeIdFromLocation(Integer xPosition, Integer yPosition)
     {
-        return -1; // NOT DONE
+        return 10; // NOT DONE
     }
 
 
@@ -267,7 +267,7 @@ public class GameState implements Controllable,Visualisable
      */
     public Integer getNextPlayerToMove()
     {
-        return -1; // NOT DONE
+        return 1; // NOT DONE
     }
 
     /**
@@ -276,7 +276,7 @@ public class GameState implements Controllable,Visualisable
      */
     public Integer getWinningPlayerId()
     {
-        return -1; // NOT DONE
+        return 3; // NOT DONE
     }
 
 

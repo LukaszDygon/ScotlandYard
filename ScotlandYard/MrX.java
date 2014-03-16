@@ -18,10 +18,10 @@ public class MrX extends Player
     {
         clearLogsAndTickets();
 
-        tickets[getNumericEnum(Initialisable.TicketType.Bus)] = 4;
-        tickets[getNumericEnum(Initialisable.TicketType.Taxi)] = 4;
-        tickets[getNumericEnum(Initialisable.TicketType.Underground)] = 4;
-        tickets[getNumericEnum(Initialisable.TicketType.DoubleMove)] = 4;
+        tickets[getNumericEnum(Initialisable.TicketType.Bus)] = 24;
+        tickets[getNumericEnum(Initialisable.TicketType.Taxi)] = 24;
+        tickets[getNumericEnum(Initialisable.TicketType.Underground)] = 24;
+        tickets[getNumericEnum(Initialisable.TicketType.DoubleMove)] = 2;
         tickets[getNumericEnum(Initialisable.TicketType.SecretMove)] = 4;
     }
 }

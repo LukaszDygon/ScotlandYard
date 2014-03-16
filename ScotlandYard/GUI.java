@@ -56,24 +56,43 @@ public class GUI extends GameVisualiser {
 			w.getContentPane().add(mapPanel, gbc_mapPanel);
 			GridBagLayout gbl_mapPanel = new GridBagLayout();
 			gbl_mapPanel.columnWidths = new int[] {1025, 0};
-			gbl_mapPanel.rowHeights = new int[] {810, 0};
+			gbl_mapPanel.rowHeights = new int[] {810, 0, 0};
 			gbl_mapPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-			gbl_mapPanel.rowWeights = new double[]{0.0, 1.0};
+			gbl_mapPanel.rowWeights = new double[]{0.0, 1.0, 0.0};
 			mapPanel.setLayout(gbl_mapPanel);
-			
-			setMap(mapPanel);
-			
+
 			////////////COUNTERS////////////
 			
 			final JLayeredPane counters = new JLayeredPane();
 			mapPanel.setLayer(counters, 1);
 			GridBagConstraints gbc_counters = new GridBagConstraints();
+			gbc_counters.insets = new Insets(0, 0, 5, 0);
 			gbc_counters.fill = GridBagConstraints.BOTH;
 			gbc_counters.gridx = 0;
 			gbc_counters.gridy = 0;
 			mapPanel.add(counters, gbc_counters);
-
-			setCounters(mapPanel, counters);
+			
+			final JPanel getTransportType = new JPanel();
+			GridBagConstraints gbc_getTransportType = new GridBagConstraints();
+			gbc_getTransportType.insets = new Insets(0, 0, 5, 0);
+			gbc_getTransportType.gridx = 0;
+			gbc_getTransportType.gridy = 0;
+			mapPanel.add(getTransportType, gbc_getTransportType);
+			getTransportType.setVisible(false);
+			getTransportType.setBackground(Color.LIGHT_GRAY);
+			mapPanel.setLayer(getTransportType, 2);
+			
+			setMap(mapPanel, getTransportType);
+			
+			JPanel winScreen = new JPanel();
+			winScreen.setVisible(false);
+			mapPanel.setLayer(winScreen, 3);
+			GridBagConstraints gbc_winScreen = new GridBagConstraints();
+			gbc_winScreen.insets = new Insets(0, 0, 5, 0);
+			gbc_winScreen.gridx = 0;
+			gbc_winScreen.gridy = 0;
+			mapPanel.add(winScreen, gbc_winScreen);
+			
 			
 			//////////PLAYERS/////////////
 			
@@ -146,7 +165,9 @@ public class GUI extends GameVisualiser {
 					setCounters(mapPanel, counters);
 					setMrX(mrXPanel);
 					setDetectives(detectivePanel_1);
+					getTransportType.setVisible(false);
 				}
+				
 			});
 			panel.add(newGame);
 			
@@ -163,7 +184,9 @@ public class GUI extends GameVisualiser {
 						System.out.println(""+filename.getName());
 
                         controllable.saveGame(filename.getAbsolutePath());
+                        getTransportType.setVisible(false);
 					}
+					
 				}
 			});
 			panel.add(saveGame);
@@ -184,6 +207,7 @@ public class GUI extends GameVisualiser {
 						setMrX(mrXPanel);
 						setDetectives(detectivePanel_1);
 					}
+					getTransportType.setVisible(false);
 				}
 			});
 			panel.add(loadGame);
@@ -206,9 +230,9 @@ public class GUI extends GameVisualiser {
 			xMoves.removeAll();
 			xMoves.validate();
 			List<Initialisable.TicketType> moveList = visualisable.getMoveList(0);
-			for (int n = 0; n<24; n++)
+			for (int n = 0; n<moveList.size(); n++)
 			{
-				JLabel move = new JLabel((n+1) + ": Train" /*+ moveList.get(n)*/);
+				JLabel move = new JLabel((n+1) + ": " + (moveList.get(n)));
 				GridBagConstraints gbc_move = new GridBagConstraints();
 				move.setForeground(Color.WHITE);
 				gbc_move.insets = new Insets(0, 0, 5, 5);
@@ -248,34 +272,53 @@ public class GUI extends GameVisualiser {
 			mapPanel.setLayer(counterDetective4, 1);
 				
 			final JLabel counterX = new JLabel("mrX");
+			counterX.setVisible(visualisable.isVisible(4));
 			counterX.setBounds((Integer)getPosX(playerVisualisable.getNodeId(4))-20, (Integer)getPosY(playerVisualisable.getNodeId(4))-20, 40,40);
 			counters.add(counterX);
 			counterX.setIcon(new ImageIcon(GUI.class.getResource("/Images/mrX.png")));
 			mapPanel.setLayer(counterX, 1);
-			mapPanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{counterDetective1, counterDetective2, counterDetective3, counterDetective4, counterX}));
+			
+			
+			final JLabel currentPlayer = new JLabel("Current");
+			if (visualisable.getNextPlayerToMove().equals(4))
+			{
+				currentPlayer.setVisible(visualisable.isVisible(4));
+			}
+			else { currentPlayer.setVisible(true); }
+			currentPlayer.setBounds((Integer)getPosX(playerVisualisable.getNodeId(visualisable.getNextPlayerToMove()))-30, (Integer)getPosY(playerVisualisable.getNodeId(visualisable.getNextPlayerToMove()))-30, 60,60);
+			counters.add(currentPlayer);
+			currentPlayer.setIcon(new ImageIcon(GUI.class.getResource("/Images/dot.png")));
+			mapPanel.setLayer(currentPlayer, 1);
+			mapPanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{currentPlayer, counterDetective1, counterDetective2, counterDetective3, counterDetective4, counterX}));
+			System.out.println("" +visualisable.getNextPlayerToMove());
+			
 			counters.revalidate();
 			counters.repaint();
 		}
 		
-		private void setMap(JLayeredPane mapPanel)
+		private void setMap(final JLayeredPane mapPanel, final JPanel getTransportType)
 		{
 			JLabel mapLabel = new JLabel("");
+			if (! getTransportType.isVisible()){
 			mapLabel.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseReleased(MouseEvent e) {
-					
-					int x = e.getX();
-					int y = e.getY();
-					point.setLocation(x, y);
-					System.out.println(point);
+				public void mouseClicked(MouseEvent e) {
+					if (!getTransportType.isVisible()){
+						int x = e.getX();
+						int y = e.getY();
+						point.setLocation(x, y);
+						getTransportType.removeAll();
+						showTransport(getTransportType, true, x, y);
+					}
 				}
 			});
+			}
 			mapLabel.setIcon(new ImageIcon(GUI.class.getResource(getMap())));
 			mapLabel.setVerticalAlignment(SwingConstants.TOP);
 			mapLabel.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gbc_mapLabel = new GridBagConstraints();
 			gbc_mapLabel.fill = GridBagConstraints.BOTH;
-			gbc_mapLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_mapLabel.insets = new Insets(0, 0, 5, 0);
 			gbc_mapLabel.gridx = 0;
 			gbc_mapLabel.gridy = 0;
 			mapPanel.add(mapLabel, gbc_mapLabel);
@@ -294,7 +337,12 @@ public class GUI extends GameVisualiser {
 			mrXPanel.add(xPhoto, gbc_xPhoto);
 			
 			JLabel xName = new JLabel("Mr Y");
-			xName.setForeground(Color.WHITE);
+			
+			if (visualisable.getNextPlayerToMove().equals(4))
+			{
+				xName.setForeground(Color.RED);
+			}
+			else {xName.setForeground(Color.WHITE);}
 			GridBagConstraints gbc_xName = new GridBagConstraints();
 			gbc_xName.gridwidth = 2;
 			gbc_xName.insets = new Insets(0, 0, 5, 0);
@@ -555,7 +603,81 @@ public class GUI extends GameVisualiser {
 			detective.add(train, gbc_train);
 		}
 		
+		private void showTransport(final JPanel getTransportType, Boolean visible, int x, int y)
+		{
+			getTransportType.setVisible(visible);
+			getTransportType.removeAll();
+
+			
+			JLabel messagePopUp = new JLabel("Select Transport Type");
+			messagePopUp.setFont(new Font("Tahoma", Font.BOLD, 18));
+			getTransportType.add(messagePopUp);
+			
+			JButton selectTaxi = new JButton("Taxi");
+			selectTaxi.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					//ticketType = Initialisable.TicketType.Taxi;
+					getTransportType.setVisible(false);
+				}
+			});
+			getTransportType.add(selectTaxi);
+			
+			JButton selectBus = new JButton("Bus");
+			selectBus.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					//ticketType = Initialisable.TicketType.Bus;
+					getTransportType.setVisible(false);
+				}
+			});
+			getTransportType.add(selectBus);
+			
+			JButton selectTrain = new JButton("Train");
+			selectTrain.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					//ticketType = Initialisable.TicketType.Underground;
+					getTransportType.setVisible(false);
+				}
+			});
+			getTransportType.add(selectTrain);
+			
+			if (visualisable.getNextPlayerToMove().equals(4)) {
+				JButton selectHidden = new JButton("Hidden");
+				selectHidden.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						//ticketType = Initialisable.TicketType.SecretMove;
+						getTransportType.setVisible(false);
+					}
+				});
+				getTransportType.add(selectHidden);
+				
+				JButton selectDouble = new JButton("Double");
+				selectDouble.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						//ticketType = Initialisable.TicketType.DoubleMove;
+						getTransportType.setVisible(false);
+					}
+				});
+				getTransportType.add(selectDouble);
+			}
+			getTransportType.repaint();
+		}
 		
+		private void endGame(JPanel winScreen)
+		{
+			//conditions
+			JLabel xWinPicture = new JLabel("");
+			xWinPicture.setIcon(new ImageIcon(GUI.class.getResource("/Images/XWins.png")));
+			winScreen.add(xWinPicture);
+			
+			JLabel detectiveWinLabel = new JLabel("");
+			detectiveWinLabel.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectivesWin.png")));
+			winScreen.add(detectiveWinLabel);
+		}
 }
 
 

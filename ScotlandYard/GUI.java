@@ -102,7 +102,7 @@ public class GUI extends GameVisualiser {
 			getTransportType.setBackground(Color.LIGHT_GRAY);
 			mapPanel.setLayer(getTransportType, 2);
 			
-			JPanel winScreen = new JPanel();
+			final JPanel winScreen = new JPanel();
 			winScreen.setVisible(false);
 			mapPanel.setLayer(winScreen, 3);
 			GridBagConstraints gbc_winScreen = new GridBagConstraints();
@@ -185,6 +185,7 @@ public class GUI extends GameVisualiser {
 					setMrX(mrXPanel);
 					setDetectives(detectivePanel_1);
 					getTransportType.setVisible(false);
+					winScreen.setVisible(false);
 				}
 				
 			});
@@ -194,7 +195,7 @@ public class GUI extends GameVisualiser {
 			saveGame.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent event) {
-					JFileChooser c = new JFileChooser("./SaveFiles");
+					JFileChooser c = new JFileChooser("./");
 					int returnVal = c.showSaveDialog(saveGame);
 					if (returnVal == JFileChooser.APPROVE_OPTION)
 					{
@@ -204,6 +205,7 @@ public class GUI extends GameVisualiser {
 
                         controllable.saveGame(filename.getAbsolutePath());
                         getTransportType.setVisible(false);
+                        winScreen.setVisible(false);
 					}
 					
 				}
@@ -214,7 +216,7 @@ public class GUI extends GameVisualiser {
 			loadGame.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent event) {
-					JFileChooser c = new JFileChooser("./SaveFiles");
+					JFileChooser c = new JFileChooser("./");
 					int returnVal = c.showOpenDialog(loadGame);
 					if (returnVal == JFileChooser.APPROVE_OPTION)
 					{
@@ -270,31 +272,31 @@ public class GUI extends GameVisualiser {
 			counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0))-20, (Integer)getPosY(playerVisualisable.getNodeId(0))-20, 40,40);
 			counters.add(counterDetective1);
 			mapPanel.setLayer(counterDetective1, 1);
-			counterDetective1.setIcon(new ImageIcon(GUI.class.getResource("/Images/d1.png")));
+			counterDetective1.setIcon(new ImageIcon(GUI.class.getResource("d1.png")));
 				
 			final JLabel counterDetective2 = new JLabel("d2");
 			counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1))-20, (Integer)getPosY(playerVisualisable.getNodeId(1))-20, 40,40);
 			counters.add(counterDetective2);
-			counterDetective2.setIcon(new ImageIcon(GUI.class.getResource("/Images/d2.png")));
+			counterDetective2.setIcon(new ImageIcon(GUI.class.getResource("d2.png")));
 			mapPanel.setLayer(counterDetective2, 1);
 				
 			final JLabel counterDetective3 = new JLabel("d3");
 			counterDetective3.setBounds((Integer)getPosX(playerVisualisable.getNodeId(2))-20, (Integer)getPosY(playerVisualisable.getNodeId(2))-20, 40,40);
 			counters.add(counterDetective3);
-			counterDetective3.setIcon(new ImageIcon(GUI.class.getResource("/Images/d3.png")));
+			counterDetective3.setIcon(new ImageIcon(GUI.class.getResource("d3.png")));
 			mapPanel.setLayer(counterDetective3, 1);
 				
 			final JLabel counterDetective4 = new JLabel("d4");
 			counterDetective4.setBounds((Integer)(getPosX(playerVisualisable.getNodeId(3))-20), (Integer)getPosY(playerVisualisable.getNodeId(3))-20, 40,40);
 			counters.add(counterDetective4);
-			counterDetective4.setIcon(new ImageIcon(GUI.class.getResource("/Images/d4.png")));
+			counterDetective4.setIcon(new ImageIcon(GUI.class.getResource("d4.png")));
 			mapPanel.setLayer(counterDetective4, 1);
 				
 			final JLabel counterX = new JLabel("mrX");
 			counterX.setVisible(visualisable.isVisible(4));
 			counterX.setBounds((Integer)getPosX(playerVisualisable.getNodeId(4))-20, (Integer)getPosY(playerVisualisable.getNodeId(4))-20, 40,40);
 			counters.add(counterX);
-			counterX.setIcon(new ImageIcon(GUI.class.getResource("/Images/mrX.png")));
+			counterX.setIcon(new ImageIcon(GUI.class.getResource("mrX.png")));
 			mapPanel.setLayer(counterX, 1);
 			
 			
@@ -347,7 +349,7 @@ public class GUI extends GameVisualiser {
 		{
 			mrXPanel.removeAll();
 			JLabel xPhoto = new JLabel("");
-			xPhoto.setIcon(new ImageIcon(GUI.class.getResource("./Images/mrX.jpg")));
+			xPhoto.setIcon(new ImageIcon(GUI.class.getResource("mrX.jpg")));
 			GridBagConstraints gbc_xPhoto = new GridBagConstraints();
 			gbc_xPhoto.gridwidth = 2;
 			gbc_xPhoto.gridheight = 2;
@@ -477,7 +479,7 @@ public class GUI extends GameVisualiser {
 			
 			detective1.removeAll();
 			JLabel detectivePhoto1 = new JLabel("");
-			detectivePhoto1.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveBlue.jpg")));
+			detectivePhoto1.setIcon(new ImageIcon(GUI.class.getResource("detectiveBlue.jpg")));
 			GridBagConstraints gbc_detectivePhoto1 = new GridBagConstraints();
 			gbc_detectivePhoto1.gridheight = 2;
 			gbc_detectivePhoto1.insets = new Insets(0, 0, 0, 5);
@@ -503,7 +505,7 @@ public class GUI extends GameVisualiser {
 		{
 			detective2.removeAll();
 			JLabel detectivePhoto2 = new JLabel("");
-			detectivePhoto2.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveGreen.jpg")));
+			detectivePhoto2.setIcon(new ImageIcon(GUI.class.getResource("detectiveGreen.jpg")));
 			GridBagConstraints gbc_detectivePhoto2 = new GridBagConstraints();
 			gbc_detectivePhoto2.gridheight = 2;
 			gbc_detectivePhoto2.insets = new Insets(0, 0, 0, 5);
@@ -529,7 +531,7 @@ public class GUI extends GameVisualiser {
 		{
 			detective3.removeAll();
 			JLabel detectivePhoto3 = new JLabel("");
-			detectivePhoto3.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveYellow.jpg")));
+			detectivePhoto3.setIcon(new ImageIcon(GUI.class.getResource("detectiveYellow.jpg")));
 			GridBagConstraints gbc_detectivePhoto3 = new GridBagConstraints();
 			gbc_detectivePhoto3.gridheight = 2;
 			gbc_detectivePhoto3.insets = new Insets(0, 0, 0, 5);
@@ -555,7 +557,7 @@ public class GUI extends GameVisualiser {
 		{
 			detective4.removeAll();
 			JLabel detectivePhoto4 = new JLabel("");
-			detectivePhoto4.setIcon(new ImageIcon(GUI.class.getResource("./Images/detectiveRed.jpg")));
+			detectivePhoto4.setIcon(new ImageIcon(GUI.class.getResource("detectiveRed.jpg")));
 			GridBagConstraints gbc_detectivePhoto4 = new GridBagConstraints();
 			gbc_detectivePhoto4.gridheight = 2;
 			gbc_detectivePhoto4.insets = new Insets(0, 0, 0, 5);
@@ -788,14 +790,15 @@ public class GUI extends GameVisualiser {
 		
 		private void endGame(JPanel winScreen, String winner)
 		{
+			winScreen.setVisible(true);
 			if (winner.equals("X")) {
 				JLabel xWinPicture = new JLabel("");
-				xWinPicture.setIcon(new ImageIcon(GUI.class.getResource("/Images/XWins.png")));
+				xWinPicture.setIcon(new ImageIcon(GUI.class.getResource("XWins.png")));
 				winScreen.add(xWinPicture);
 			}
 			else {
 				JLabel detectiveWinLabel = new JLabel("");
-				detectiveWinLabel.setIcon(new ImageIcon(GUI.class.getResource("/Images/detectivesWin.png")));
+				detectiveWinLabel.setIcon(new ImageIcon(GUI.class.getResource("detectivesWin.png")));
 				winScreen.add(detectiveWinLabel);
 			}
 		}

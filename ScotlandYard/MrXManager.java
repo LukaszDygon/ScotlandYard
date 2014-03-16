@@ -54,11 +54,23 @@ public class MrXManager implements SerializableSY
         return -1;
     }
 
-    public void setPlayerPosition(Integer playerId,Integer nodeId)
+    public void setPlayerPosition(Integer playerId,Integer nodeId, Initialisable.TicketType type)
     {
         for (MrX mrX: mrXs)
         {
-            if (mrX.getId().equals(playerId)) mrX.setNodePosition(nodeId);
+            if (mrX.getId().equals(playerId))
+            {
+                mrX.logTicket(type);
+                mrX.setNodePosition(nodeId);
+            }
+        }
+    }
+    public void initPlayerPosition(Integer playerId,Integer nodeId)
+    {
+        for (MrX mrX: mrXs)
+        {
+            if (mrX.getId().equals(playerId))
+                mrX.setNodePosition(nodeId);
         }
     }
 
@@ -77,6 +89,24 @@ public class MrXManager implements SerializableSY
         return 0;
     }
 
+    public void giveTicket(Initialisable.TicketType type, Integer playerId)
+    {
+        for (MrX mrX: mrXs)
+        {
+            if (mrX.getId().equals(playerId))
+                mrX.giveTicket(type);
+        }
+    }
+
+    public void useTicket(Initialisable.TicketType type, Integer playerId)
+    {
+        for (MrX mrX: mrXs)
+        {
+            if (mrX.getId().equals(playerId))
+                mrX.useTicket(type);
+        }
+    }
+
     public List<Initialisable.TicketType> getMoveList(Integer playerId)
     {
         for (MrX mrX: mrXs)
@@ -93,13 +123,16 @@ public class MrXManager implements SerializableSY
         {
             if (mrX.getId().equals(playerId))
             {
-                if (mrX.getId().equals(gameState.getNextPlayerToMove()))
+                if (mrX.getNodePosLog().size()<=0)
+                    return false;
+
+                if (mrX.getId().equals(gameState.getNextPlayerToMove())||gameState.isGameOver())
                     return true;
 
                 int []showTurns = {3,8,13,18};
                 for (int showTurn : showTurns)
                 {
-                    if (mrX.getNodePosLog().size()==showTurn)
+                    if (mrX.getTicketLog().size()==showTurn)
                         return true;
                 }
             }

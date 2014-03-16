@@ -126,6 +126,56 @@ public class Graph implements SerializableSY
     	return output;
     }
 
+    public List<Integer> getNodeNeighbours(Integer nodeId)
+    {
+        ArrayList<Integer> nodes_out = new ArrayList<Integer>();
+
+        for (Edge edge : edges)
+        {
+            if (edge.id1().equals(nodeId))
+            {
+                nodes_out.add(edge.id2());
+            }
+            if (edge.id2().equals(nodeId))
+            {
+                nodes_out.add(edge.id1());
+            }
+        }
+
+        return nodes_out;
+    }
+
+    public List<Edge> getNodeEdges(Integer nodeId)
+    {
+        List<Edge> edges_out = new ArrayList<Edge>();
+
+        for (Edge edge : edges)
+        {
+            if (edge.id1().equals(nodeId)||edge.id2().equals(nodeId))
+            {
+                edges_out.add(edge);
+            }
+        }
+
+        return edges_out;
+    }
+
+    public List<Edge> getEdges(Integer nodeId_1,Integer nodeId_2)
+    {
+        List<Edge> edges_out = new ArrayList<Edge>();
+
+        for (Edge edge : edges)
+        {
+            if ((edge.id1().equals(nodeId_1)&&edge.id2().equals(nodeId_2))&&
+                    (edge.id2().equals(nodeId_1)&&edge.id1().equals(nodeId_2)))
+            {
+                edges_out.add(edge);
+            }
+        }
+
+        return edges_out;
+    }
+
 
 
     public ByteArrayOutputStream save()

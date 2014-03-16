@@ -186,4 +186,19 @@ public class Edge implements SerializableSY {
                 type = EdgeType.Hidden;
         }
     }
+
+    public static Initialisable.TicketType getTicketTypeForEdge(EdgeType type)
+    {
+        switch(type)
+        {
+            case Bus:
+                return Initialisable.TicketType.Bus;
+            case Taxi:
+                return Initialisable.TicketType.Taxi;
+            case Underground:
+                return Initialisable.TicketType.Underground;
+        }
+
+        return Initialisable.TicketType.SecretMove;
+    }
 }

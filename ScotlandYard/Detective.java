@@ -16,7 +16,7 @@ public class Detective extends Player
     {
         clearLogsAndTickets();
 
-        tickets[getNumericEnum(Initialisable.TicketType.Taxi)] = 11;
+        tickets[getNumericEnum(Initialisable.TicketType.Taxi)] = 10;
         tickets[getNumericEnum(Initialisable.TicketType.Bus)] = 8;
         tickets[getNumericEnum(Initialisable.TicketType.Underground)] = 4;
     }

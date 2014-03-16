@@ -16,7 +16,7 @@ public class Game {
         map = new Map("./graph.txt","./pos.txt","./Images/map.jpg");
         playerManager = new PlayerManager();
         GameState gameState = new GameState(this);
-        playerManager.init(4,gameState); // 4 detectives
+        playerManager.init(getNumberOfDetectives(),gameState);
 
         GUI gui = new GUI();
         gui.registerVisualisable(gameState);
@@ -36,6 +36,11 @@ public class Game {
     public Map getMap()
     {
         return map;
+    }
+
+    public static int getNumberOfDetectives()
+    {
+        return 4;
     }
 
     public static void fail(String failMessage)

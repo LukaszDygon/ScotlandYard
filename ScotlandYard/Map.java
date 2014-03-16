@@ -115,7 +115,7 @@ public class Map implements MapVisualisable, SerializableSY
             }
         }
 
-        return currentBestNode; // NOT DONE
+        return currentBestNode;
     }
 
 

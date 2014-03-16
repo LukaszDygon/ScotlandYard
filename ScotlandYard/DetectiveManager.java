@@ -20,6 +20,11 @@ public class DetectiveManager implements SerializableSY
             detectives.add(new Detective(i));
     }
 
+    public boolean isVisible(Integer playerID)
+    {
+        return detectives.get(playerID).getNodePosLog().size()>0;
+    }
+
     public void newGameInit()
     {
         for (Detective detective : detectives) detective.newGameInit();
@@ -53,7 +58,12 @@ public class DetectiveManager implements SerializableSY
         return detectives.size();
     }
 
-    public void setPlayerPosition(Integer playerId,Integer nodeId)
+    public void setPlayerPosition(Integer playerId,Integer nodeId, Initialisable.TicketType type)
+    {
+        detectives.get(playerId).setNodePosition(nodeId);
+        detectives.get(playerId).logTicket(type);
+    }
+    public void initPlayerPosition(Integer playerId,Integer nodeId)
     {
         detectives.get(playerId).setNodePosition(nodeId);
     }
@@ -62,6 +72,16 @@ public class DetectiveManager implements SerializableSY
     public Integer getNumberOfTickets(Initialisable.TicketType type, Integer playerId)
     {
         return detectives.get(playerId).getNumberOfTickets(type);
+    }
+
+    public void giveTicket(Initialisable.TicketType type, Integer playerId)
+    {
+        detectives.get(playerId).giveTicket(type);
+    }
+
+    public void useTicket(Initialisable.TicketType type, Integer playerId)
+    {
+        detectives.get(playerId).useTicket(type);
     }
 
     public List<Initialisable.TicketType> getMoveList(Integer playerId)

@@ -64,17 +64,24 @@ public class PlayerManager implements SerializableSY
             return mrXManager.getNodeId(playerId);
     }
 
-    public void setPlayerPosition(Integer playerId,Integer nodeId)
+    public void setPlayerPosition(Integer playerId,Integer nodeId, Initialisable.TicketType type)
     {
-        //some validation here
-
-
         if (playerId<detectiveManager.getDetectiveCount())
         {
-            detectiveManager.setPlayerPosition(playerId,nodeId);
+            detectiveManager.setPlayerPosition(playerId,nodeId,type);
         }
         else
-            mrXManager.setPlayerPosition(playerId,nodeId);
+            mrXManager.setPlayerPosition(playerId,nodeId,type);
+    }
+
+    public void initPlayerPosition(Integer playerId,Integer nodeId)
+    {
+        if (playerId<detectiveManager.getDetectiveCount())
+        {
+            detectiveManager.initPlayerPosition(playerId, nodeId);
+        }
+        else
+            mrXManager.initPlayerPosition(playerId, nodeId);
     }
 
     public Integer getNumberOfTickets(Initialisable.TicketType type, Integer playerId)
@@ -83,6 +90,22 @@ public class PlayerManager implements SerializableSY
             return detectiveManager.getNumberOfTickets(type,playerId);
         else
             return mrXManager.getNumberOfTickets(type, playerId);
+    }
+
+    public void giveTicket(Initialisable.TicketType type, Integer playerId)
+    {
+        if (playerId<detectiveManager.getDetectiveCount())
+            detectiveManager.giveTicket(type,playerId);
+        else
+            mrXManager.giveTicket(type, playerId);
+    }
+
+    public void useTicket(Initialisable.TicketType type, Integer playerId)
+    {
+        if (playerId<detectiveManager.getDetectiveCount())
+            detectiveManager.useTicket(type, playerId);
+        else
+            mrXManager.useTicket(type, playerId);
     }
 
     public List<Initialisable.TicketType> getMoveList(Integer playerId)
@@ -98,7 +121,7 @@ public class PlayerManager implements SerializableSY
     {
         if (playerId<detectiveManager.getDetectiveCount())
         {
-            return true;
+            return detectiveManager.isVisible(playerId);
         }
         else
             return mrXManager.isVisible(playerId);

@@ -37,6 +37,16 @@ public class Player implements SerializableSY
         return tickets[getNumericEnum(type)];
     }
 
+    public void giveTicket(Initialisable.TicketType type)
+    {
+        tickets[getNumericEnum(type)] = tickets[getNumericEnum(type)]+1;
+    }
+
+    public void useTicket(Initialisable.TicketType type)
+    {
+        tickets[getNumericEnum(type)] = tickets[getNumericEnum(type)]-1;
+    }
+
     public static int getNumericEnum(Initialisable.TicketType type)// why, in C++ I wouldnt have to do this shit
     {
         switch(type)
@@ -102,6 +112,7 @@ public class Player implements SerializableSY
     public void logTicket(Initialisable.TicketType type)
     {
         ticketLog.add(type);
+        useTicket(type);
     }
 
     public ByteArrayOutputStream save()

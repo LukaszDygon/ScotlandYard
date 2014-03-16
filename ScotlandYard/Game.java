@@ -13,7 +13,7 @@ public class Game {
 
     public void run()
     {
-        map = new Map("./graph.txt","./pos.txt","./Images/map.jpg");
+        map = new Map("./graph.txt","./pos.txt","./map.jpg");
         playerManager = new PlayerManager();
         GameState gameState = new GameState(this);
         playerManager.init(getNumberOfDetectives(),gameState);

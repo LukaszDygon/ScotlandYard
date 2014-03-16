@@ -7,10 +7,9 @@ import java.util.List;
  * Created by devsh on 10/03/14.
  */
 
-public class PlayerManager implements PlayerVisualisable, SerializableSY
+public class PlayerManager implements SerializableSY
 {
     private Game game;
-    private Map map;
     private DetectiveManager detectiveManager;
     private MrXManager mrXManager;
 
@@ -21,8 +20,6 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
 
     public void init(Integer numberOfDetectives)
     {
-        map = game.getMap();
-
         detectiveManager = new DetectiveManager(numberOfDetectives);
         mrXManager = new MrXManager(1,numberOfDetectives);
     }
@@ -31,35 +28,6 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
     {
         detectiveManager.newGameInit();
         mrXManager.newGameInit();
-    }
-
-    /**
-     * Function to get the x position of a node given its id
-     * @param nodeId The node id you wish to find the location of
-     * @return An integer value of a nodes x position
-     */
-    public Integer getLocationX(Integer nodeId)
-    {
-        try {return map.getNodePos(nodeId).data[0];}
-        catch(NullPointerException e)
-        {
-        	return 0;
-        }
-        
-    }
-
-    /**
-     * Function to get the y position of a node given its id
-     * @param nodeId The node id you wish to find the location of
-     * @return An integer value of a nodes y position
-     */
-    public Integer getLocationY(Integer nodeId)
-    {
-    	try {return map.getNodePos(nodeId).data[1];}
-        catch(NullPointerException e)
-        {
-        	return 0;
-        }
     }
 
     /**
@@ -110,6 +78,34 @@ public class PlayerManager implements PlayerVisualisable, SerializableSY
         else
             mrXManager.setPlayerPosition(playerId,nodeId);
     }
+
+    public Integer getNumberOfTickets(Initialisable.TicketType type, Integer playerId)
+    {
+        if (playerId<detectiveManager.getDetectiveCount())
+            return detectiveManager.getNumberOfTickets(type,playerId);
+        else
+            return mrXManager.getNumberOfTickets(type, playerId);
+    }
+
+    public List<Initialisable.TicketType> getMoveList(Integer playerId)
+    {
+        if (playerId<detectiveManager.getDetectiveCount())
+            return detectiveManager.getMoveList(playerId);
+        else
+            return mrXManager.getMoveList(playerId);
+    }
+
+
+    public Boolean isVisible(Integer playerId)
+    {
+        if (playerId<detectiveManager.getDetectiveCount())
+        {
+            return true;
+        }
+        else
+            return mrXManager.isVisible(playerId);
+    }
+
     public ByteArrayOutputStream save()
     {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();

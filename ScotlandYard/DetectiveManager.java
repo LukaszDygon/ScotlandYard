@@ -59,6 +59,16 @@ public class DetectiveManager implements SerializableSY
     }
 
 
+    public Integer getNumberOfTickets(Initialisable.TicketType type, Integer playerId)
+    {
+        return detectives.get(playerId).getNumberOfTickets(type);
+    }
+
+    public List<Initialisable.TicketType> getMoveList(Integer playerId)
+    {
+        return detectives.get(playerId).getTicketLog();
+    }
+
     public ByteArrayOutputStream save()
     {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();

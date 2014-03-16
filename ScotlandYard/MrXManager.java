@@ -64,6 +64,48 @@ public class MrXManager implements SerializableSY
         return mrXs.size();
     }
 
+    public Integer getNumberOfTickets(Initialisable.TicketType type, Integer playerId)
+    {
+        for (MrX mrX: mrXs)
+        {
+            if (mrX.getId().equals(playerId))
+                return mrX.getNumberOfTickets(type);
+        }
+        return 0;
+    }
+
+    public List<Initialisable.TicketType> getMoveList(Integer playerId)
+    {
+        for (MrX mrX: mrXs)
+        {
+            if (mrX.getId().equals(playerId))
+                return mrX.getTicketLog();
+        }
+        return null;
+    }
+
+    public Boolean isVisible(Integer playerId)
+    {
+        for (MrX mrX: mrXs)
+        {
+            if (mrX.getId().equals(playerId))
+            {
+                boolean show = false;
+                int []showTurns = {3,8,13,18};
+                for (int showTurn : showTurns)
+                {
+                    if (mrX.getNodePosLog().size()==showTurn)
+                    {
+                        show = true;
+                        break;
+                    }
+                }
+                return show;
+            }
+        }
+
+        return false;
+    }
 
     public ByteArrayOutputStream save()
     {

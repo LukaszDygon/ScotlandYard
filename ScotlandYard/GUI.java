@@ -416,19 +416,8 @@ public class GUI extends GameVisualiser {
 						System.out.println("SAVE");
 						File filename = c.getSelectedFile();
 						System.out.println(""+filename.getName());
-						
-						try {
-							FileOutputStream saveFile = new FileOutputStream (filename);
-						    ByteArrayOutputStream baos = serializableSY.save();
-						    
-						    baos.writeTo(saveFile);
-						    saveFile.close();
-						    
-						    
-						} catch(IOException ioe) {
-						    // Handle exception here
-						    ioe.printStackTrace();
-						}
+
+                        controllable.saveGame(filename.getAbsolutePath());
 					}
 				}
 			});
@@ -444,16 +433,7 @@ public class GUI extends GameVisualiser {
 					{
 						System.out.println("LOAD");
 						File filename = c.getSelectedFile();
-                        try
-                        {
-                            FileInputStream loadFile = new FileInputStream(filename);
-                            byte []buffer = new byte[loadFile.available()];
-                            loadFile.read(buffer,0,loadFile.available());
-						    serializableSY.load(new ByteArrayInputStream(buffer));
-                        } catch (IOException ioe)
-                        {
-                            System.out.print("LOAD FAIL");
-                        }
+					    controllable.loadGame(filename.getAbsolutePath());
 						
 						counterDetective1.setBounds((Integer)getPosX(playerVisualisable.getNodeId(0)), (Integer)getPosY(playerVisualisable.getNodeId(0)), 40,40);
 						counterDetective2.setBounds((Integer)getPosX(playerVisualisable.getNodeId(1)), (Integer)getPosY(playerVisualisable.getNodeId(1)), 40,40);

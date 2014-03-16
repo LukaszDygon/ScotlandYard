@@ -176,6 +176,8 @@ public class Map implements MapVisualisable, SerializableSY
         Integer []size = new Integer[1];
         size[0] = ByteBuffer.wrap(bytesInt).getInt();
 
+        Game.fastprintln("Graph Buffer size: "+size[0]);
+
         if (buffer.available()<size[0])
             return;
 

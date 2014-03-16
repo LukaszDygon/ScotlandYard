@@ -178,7 +178,7 @@ public class Graph implements SerializableSY
             buffer.read(bytesInt,0,4);
             nodeStride = ByteBuffer.wrap(bytesInt).getInt();
         }
-        if (edgeStride>0)
+        if (numEdges>0)
         {
             buffer.read(bytesInt,0,4);
             edgeStride = ByteBuffer.wrap(bytesInt).getInt();
@@ -188,6 +188,8 @@ public class Graph implements SerializableSY
 
         if (buffer.available()<(nodeStride*numNodes+edgeStride*numEdges))
             return;
+
+        Game.fastprintln("Graph Nodes: "+numNodes+" Edges: "+numEdges+" strideNode: "+nodeStride+" strideEdge: "+edgeStride);
 
         nodes.clear();
         edges.clear();

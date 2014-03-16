@@ -18,7 +18,7 @@ public class Edge implements SerializableSY {
 	 * of transport in the game 'Scotland Yard')
 	 */
 	public enum EdgeType {
-		Taxi, Bus, Underground;
+		Taxi, Bus, Underground,Hidden;
 	}
 	
 	
@@ -183,7 +183,7 @@ public class Edge implements SerializableSY {
                 type = EdgeType.Underground;
                 break;
             default:
-                type = EdgeType.Taxi;
+                type = EdgeType.Hidden;
         }
     }
 }

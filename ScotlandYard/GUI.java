@@ -31,6 +31,26 @@ public class GUI extends GameVisualiser {
 			w.setResizable(false);
 			w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             //w.setDefaultLookAndFeelDecorated(true);
+            try
+            {
+                String lfs = UIManager.getSystemLookAndFeelClassName();
+                try
+                {
+                    UIManager.setLookAndFeel(lfs);
+                }
+                catch (UnsupportedLookAndFeelException ulafe)
+                {
+                }
+                catch (IllegalAccessException iae)
+                {
+                }
+                catch (InstantiationException ie)
+                {
+                }
+            }
+            catch (ClassNotFoundException cnfe)
+            {
+            }
 			//all the components
 			
 			w.pack();

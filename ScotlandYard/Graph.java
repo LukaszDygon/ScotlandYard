@@ -136,7 +136,7 @@ public class Graph implements SerializableSY
             {
                 nodes_out.add(edge.id2());
             }
-            if (edge.id2().equals(nodeId))
+            else if (edge.id2().equals(nodeId))
             {
                 nodes_out.add(edge.id1());
             }
@@ -166,7 +166,7 @@ public class Graph implements SerializableSY
 
         for (Edge edge : edges)
         {
-            if ((edge.id1().equals(nodeId_1)&&edge.id2().equals(nodeId_2))&&
+            if ((edge.id1().equals(nodeId_1)&&edge.id2().equals(nodeId_2))||
                     (edge.id2().equals(nodeId_1)&&edge.id1().equals(nodeId_2)))
             {
                 edges_out.add(edge);

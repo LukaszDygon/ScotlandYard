@@ -109,46 +109,62 @@ public class GameState implements Controllable,Visualisable
         if (playerId!=nextToMoveIndex)
             return false;
 
-        if (playerManager.getNumberOfTickets(ticketType,playerId)<=0)
-            return false;
 
-        if (ticketType.equals(TicketType.DoubleMove))
-        {
-            doubleMoveCounter++;
-            playerManager.useTicket(ticketType,playerId);
-            return true;
-        }
+        boolean canMoveAtAll = true;
 
-        boolean unreachableNode = true;
-        Integer playerNode = playerManager.getNodeId(playerId);
-
-
-        List<Edge> edges = map.getGraph().getNodeEdges(playerNode);
-        for (Edge edge : edges)
-        {
-            if (edge.id1().equals(targetNodeId)&&validateTicket(ticketType,edge.type()))
-            {
-                unreachableNode = false;
-                break;
-            }
-            else if (edge.id2().equals(targetNodeId)&&validateTicket(ticketType,edge.type()))
-            {
-                unreachableNode = false;
-                break;
-            }
-        }
-
-        if (unreachableNode)
-            return false;
-
-
-        playerManager.setPlayerPosition(playerId, targetNodeId, ticketType);
         if (playerId<playerManager.getDetectiveIdList().size())//current player is detective
+            canMoveAtAll = canDetectiveMove(playerId);
+        else
+            canMoveAtAll = canMrXMove(playerId);
+
+        if (canMoveAtAll)
         {
-            int mrXId = (int)(Math.random() * (playerManager.getMrXIdList().size()-0.00001));
-            mrXId += playerManager.getDetectiveIdList().size();
-            playerManager.giveTicket(ticketType, mrXId);
+            if (targetNodeId.equals(playerManager.getNodeId(playerId)))
+                return false;
+
+            if (playerManager.getNumberOfTickets(ticketType,playerId)<=0)
+                return false;
+
+            if (ticketType.equals(TicketType.DoubleMove))
+            {
+                doubleMoveCounter++;
+                playerManager.useTicket(ticketType,playerId);
+                return true;
+            }
+
+
+            boolean unreachableNode = true;
+            Integer playerNode = playerManager.getNodeId(playerId);
+
+
+            List<Edge> edges = map.getGraph().getNodeEdges(playerNode);
+            for (Edge edge : edges)
+            {
+                if (edge.id1().equals(targetNodeId)&&validateTicket(ticketType,edge.type()))
+                {
+                    unreachableNode = false;
+                    break;
+                }
+                else if (edge.id2().equals(targetNodeId)&&validateTicket(ticketType,edge.type()))
+                {
+                    unreachableNode = false;
+                    break;
+                }
+            }
+
+            if (unreachableNode)
+                return false;
+
+            playerManager.setPlayerPosition(playerId, targetNodeId, ticketType);
+            if (playerId<playerManager.getDetectiveIdList().size())//current player is detective
+            {
+                int mrXId = (int)(Math.random() * (playerManager.getMrXIdList().size()-0.00001));
+                mrXId += playerManager.getDetectiveIdList().size();
+                playerManager.giveTicket(ticketType, mrXId);
+            }
         }
+
+
 
         if (doubleMoveCounter>0)
         {

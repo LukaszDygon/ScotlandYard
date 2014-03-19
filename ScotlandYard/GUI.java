@@ -308,7 +308,7 @@ public class GUI extends GameVisualiser {
 			else { currentPlayer.setVisible(true); }
 			currentPlayer.setBounds((Integer)getPosX(playerVisualisable.getNodeId(visualisable.getNextPlayerToMove()))-30, (Integer)getPosY(playerVisualisable.getNodeId(visualisable.getNextPlayerToMove()))-30, 60,60);
 			counters.add(currentPlayer);
-			currentPlayer.setIcon(new ImageIcon(GUI.class.getResource("/Images/dot.png")));
+			currentPlayer.setIcon(new ImageIcon(GUI.class.getResource("dot.png")));
 			mapPanel.setLayer(currentPlayer, 1);
 			mapPanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{currentPlayer, counterDetective1, counterDetective2, counterDetective3, counterDetective4, counterX}));
 			System.out.println("" +visualisable.getNextPlayerToMove());

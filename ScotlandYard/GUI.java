@@ -163,6 +163,20 @@ public class GUI extends GameVisualiser {
 			
 			setDetectives(detectivePanel_1);
 			setMap(mapPanel, winScreen, counters, detectivePanel_1, mrXPanel, getTransportType);
+			
+			final JLabel privacyLabel = new JLabel("Mr Y's turn");
+			privacyLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					privacyLabel.setVisible(false);
+				}
+			});
+			privacyLabel.setBackground(Color.GRAY);
+			privacyLabel.setOpaque(true);
+			privacyLabel.setFont(new Font("Tahoma", Font.BOLD, 66));
+			counters.setLayer(privacyLabel, 3);
+			privacyLabel.setBounds(0, 0, 1025, 864);
+			counters.add(privacyLabel);
 			/////////// BUTTONS /////////////
 			
 			JPanel panel = new JPanel();
@@ -298,6 +312,11 @@ public class GUI extends GameVisualiser {
 			counters.add(counterX);
 			counterX.setIcon(new ImageIcon(GUI.class.getResource("mrX.png")));
 			mapPanel.setLayer(counterX, 1);
+			
+			if (visualisable.getNextPlayerToMove().equals(4))
+			{
+				privacyScreen(counters);
+			}
 			
 			
 			final JLabel currentPlayer = new JLabel("Current");
@@ -801,6 +820,25 @@ public class GUI extends GameVisualiser {
 				detectiveWinLabel.setIcon(new ImageIcon(GUI.class.getResource("detectivesWin.png")));
 				winScreen.add(detectiveWinLabel);
 			}
+		}
+		
+		private void privacyScreen(final JLayeredPane counters)
+		{
+			final JLabel privacyLabel = new JLabel("Mr Y's turn");
+			privacyLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					privacyLabel.setVisible(false);
+					counters.remove(privacyLabel);
+				}
+			});
+			privacyLabel.setBackground(Color.GRAY);
+			privacyLabel.setOpaque(true);
+			privacyLabel.setFont(new Font("Tahoma", Font.BOLD, 66));
+			counters.setLayer(privacyLabel, 3);
+			privacyLabel.setBounds(0, 0, 1025, 864);
+			counters.add(privacyLabel);
+			
 		}
 }
 

@@ -102,6 +102,8 @@ public class GUI extends GameVisualiser {
 			getTransportType.setBackground(Color.LIGHT_GRAY);
 			mapPanel.setLayer(getTransportType, 2);
 			
+			///////////// winscreen /////////////////
+			
 			final JPanel winScreen = new JPanel();
 			winScreen.setVisible(false);
 			mapPanel.setLayer(winScreen, 3);

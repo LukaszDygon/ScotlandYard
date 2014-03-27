@@ -574,6 +574,7 @@ public class GUI extends GameVisualiser {
 			setTrain(detective3, 2);
 			detective3.repaint();
 		}
+		
 		private void setDetective4(JPanel detective4)
 		{
 			detective4.removeAll();
